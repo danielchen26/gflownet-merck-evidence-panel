@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import './SphereCoverage.css'
+import { t, useLang, UI } from '../i18n/i18n'
 
 /* ---------------------------------------------------------------------------
    Why the diversity number everyone quotes is the wrong ruler.
@@ -13,8 +14,8 @@ import './SphereCoverage.css'
 
    Internal diversity (mean pairwise distance) rates them almost the same,
    because two extreme points are enough to inflate it. Sphere exclusion
-   (#Circles) separates them by ~7x, which is what a chemist actually wants
-   to know: how many distinct things can I put on a plate.
+   (#Circles) separates them by several fold, which is what a chemist actually
+   wants to know: how many distinct things can I put on a plate.
 
    Xie et al. (ICLR 2023) proved IntDiv satisfies only Dissimilarity and
    violates Monotonicity and Subadditivity; #Circles satisfies all three.
@@ -119,12 +120,7 @@ function Cloud({
         centers.map((c, i) => (
           <mesh key={`c${i}`} position={c}>
             <icosahedronGeometry args={[D / 2, 2]} />
-            <meshBasicMaterial
-              color="#4c7df0"
-              wireframe
-              transparent
-              opacity={0.22}
-            />
+            <meshBasicMaterial color="#4c7df0" wireframe transparent opacity={0.22} />
           </mesh>
         ))}
     </group>
@@ -133,14 +129,58 @@ function Cloud({
 
 type Metric = 'intdiv' | 'circles'
 
+const S = {
+  toggleLabel: { en: 'Choose a diversity metric', zh: '选择多样性指标' },
+  intdivLeadIn: { en: 'The two populations score almost the same on ', zh: '两组群体的 ' },
+  intdivSame: { en: 'IntDiv', zh: 'IntDiv 几乎一样' },
+  intdivTail: {
+    en: ' — the two extreme outliers on the left are enough to prop the mean up.',
+    zh: ' —— 左边那两个极端离群点就足以把均值撑起来。',
+  },
+  ratio: { en: 'ratio', zh: '比值' },
+  circlesLeadIn: {
+    en: 'Under sphere exclusion the two differ by ',
+    zh: '换成球排除计数，两者差 ',
+  },
+  circlesMid: {
+    en: '. The entire dense series on the left contributes only ',
+    zh: '。左边整个密集系列只贡献 ',
+  },
+  circlesTail: { en: ' distinguishable points.', zh: ' 个可区分点。' },
+  colA: { en: 'A · one scaffold series', zh: 'A · 单一骨架系列' },
+  colB: { en: 'B · genuine coverage', zh: 'B · 真实覆盖' },
+  descA: {
+    en: 'molecules: 58 from a single dense series plus 2 extreme outliers',
+    zh: '个分子，58 个来自同一密集系列 + 2 个极端离群点',
+  },
+  descB: {
+    en: 'molecules, all well separated from each other',
+    zh: '个分子，彼此充分分离',
+  },
+  intdivAnalogue: { en: 'IntDiv analogue', zh: 'IntDiv 类比' },
+  src: {
+    en: 'Both populations are illustrative, shown to make clear why IntDiv and sphere-exclusion counting reach opposite verdicts. Axiomatic basis: Xie, Xu, Ma & Mei,',
+    zh: '两组群体为示意，用于说明为何 IntDiv 与球排除计数会给出相反的判断。公理依据：Xie, Xu, Ma & Mei,',
+  },
+  srcTail: {
+    en: '(ICLR 2023) — IntDiv satisfies only Dissimilarity and violates Monotonicity and Subadditivity; #Circles is the only measure that satisfies all three. The measured results are in the table below.',
+    zh: '(ICLR 2023) —— IntDiv 只满足 Dissimilarity，违反 Monotonicity 与 Subadditivity；#Circles 是唯一同时满足三条公理的度量。实测结果见下表。',
+  },
+} as const
+
 export default function SphereCoverage() {
+  const { lang } = useLang()
   const [metric, setMetric] = useState<Metric>('intdiv')
   const clustered = useMemo(clusteredPopulation, [])
   const covering = useMemo(coveringPopulation, [])
 
   const stats = useMemo(
     () => ({
-      a: { n: clustered.length, div: intDiv(clustered), circ: circles(clustered, D).length },
+      a: {
+        n: clustered.length,
+        div: intDiv(clustered),
+        circ: circles(clustered, D).length,
+      },
       b: { n: covering.length, div: intDiv(covering), circ: circles(covering, D).length },
     }),
     [clustered, covering],
@@ -161,7 +201,7 @@ export default function SphereCoverage() {
   return (
     <figure className="sc">
       <div className="sc__head">
-        <div role="group" aria-label="选择多样性指标" className="sc__toggle">
+        <div role="group" aria-label={t(S.toggleLabel, lang)} className="sc__toggle">
           <button
             type="button"
             className={metric === 'intdiv' ? 'is-on' : ''}
@@ -182,15 +222,20 @@ export default function SphereCoverage() {
         <p className="sc__lede">
           {metric === 'intdiv' ? (
             <>
-              两组群体的 <strong>IntDiv 几乎一样</strong>（比值{' '}
-              <span className="u-mono">{divRatio.toFixed(2)}</span>
-              ）—— 左边那两个极端离群点就足以把均值撑起来。
+              {t(S.intdivLeadIn, lang)}
+              <strong>{t(S.intdivSame, lang)}</strong>
+              {lang === 'en' ? ' (' : '（'}
+              {t(S.ratio, lang)} <span className="u-mono">{divRatio.toFixed(2)}</span>
+              {lang === 'en' ? ')' : '）'}
+              {t(S.intdivTail, lang)}
             </>
           ) : (
             <>
-              换成球排除计数，两者差 <strong>{circRatio.toFixed(1)}×</strong>
-              。左边整个密集系列只贡献{' '}
-              <span className="u-mono">{stats.a.circ}</span> 个可区分点。
+              {t(S.circlesLeadIn, lang)}
+              <strong>{circRatio.toFixed(1)}×</strong>
+              {t(S.circlesMid, lang)}
+              <span className="u-mono">{stats.a.circ}</span>
+              {t(S.circlesTail, lang)}
             </>
           )}
         </p>
@@ -211,16 +256,18 @@ export default function SphereCoverage() {
             maxDistance={5.6}
           />
         </Canvas>
-        <div className="sc__badge u-mono">模拟 · illustration</div>
+        <div className="sc__badge u-mono">{t(UI.simulation, lang)}</div>
       </div>
 
       <div className="sc__legend">
         <div className="sc__col">
-          <span className="u-kicker">A · 单一骨架系列</span>
-          <p>{stats.a.n} 个分子，58 个来自同一密集系列 + 2 个极端离群点</p>
+          <span className="u-kicker">{t(S.colA, lang)}</span>
+          <p>
+            {stats.a.n} {t(S.descA, lang)}
+          </p>
           <dl>
             <div>
-              <dt>IntDiv 类比</dt>
+              <dt>{t(S.intdivAnalogue, lang)}</dt>
               <dd className="u-mono">{stats.a.div.toFixed(3)}</dd>
             </div>
             <div>
@@ -230,11 +277,13 @@ export default function SphereCoverage() {
           </dl>
         </div>
         <div className="sc__col">
-          <span className="u-kicker">B · 真实覆盖</span>
-          <p>{stats.b.n} 个分子，彼此充分分离</p>
+          <span className="u-kicker">{t(S.colB, lang)}</span>
+          <p>
+            {stats.b.n} {t(S.descB, lang)}
+          </p>
           <dl>
             <div>
-              <dt>IntDiv 类比</dt>
+              <dt>{t(S.intdivAnalogue, lang)}</dt>
               <dd className="u-mono">{stats.b.div.toFixed(3)}</dd>
             </div>
             <div>
@@ -246,13 +295,15 @@ export default function SphereCoverage() {
       </div>
 
       <figcaption className="sc__src u-mono">
-        两组群体为示意，用于说明为何 IntDiv 与球排除计数会给出相反的判断。公理依据：
-        Xie, Xu, Ma &amp; Mei,{' '}
-        <a href="https://openreview.net/forum?id=Yo06F8kfMa1" target="_blank" rel="noreferrer">
+        {t(S.src, lang)}{' '}
+        <a
+          href="https://openreview.net/forum?id=Yo06F8kfMa1"
+          target="_blank"
+          rel="noreferrer"
+        >
           How Much Space Has Been Explored?
         </a>{' '}
-        (ICLR 2023) —— IntDiv 只满足 Dissimilarity，违反 Monotonicity 与
-        Subadditivity；#Circles 是唯一同时满足三条公理的度量。实测结果见下表。
+        {t(S.srcTail, lang)}
       </figcaption>
     </figure>
   )

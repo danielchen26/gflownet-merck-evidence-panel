@@ -19,6 +19,14 @@
 - 团队自己的归因是**性质预测器不准，不是生成器不行**：实验 potency predictor **R² 0.66 ± 0.03**（docking R² 0.76 ± 0.01）；6 参数 MPO 的 dynamic weighting 把几乎全部权重压到 P. aeruginosa potency 上，团队最终放弃六参数联合优化。
 - **行动**：把预算投在 oracle（性质预测器、亲和力模型、独立 retrosynthesis）与 MPO 规格上，而不是换 sampler。GFlowNet 的正确定位是一次有边界的 hit-finding bake-off（数周量级实验），只有当它在相同预算下同时赢 potency 与 #Circles 才进入生产路线图。
 
+## Language
+
+The panel ships in English and Chinese. English is the default; the switcher
+sits at the top of the left rail and the choice persists in `localStorage`.
+`document.documentElement.lang` and `document.title` follow the selection.
+Every user-facing string is an `{ en, zh }` pair (`src/i18n/i18n.tsx`); numbers,
+URLs, paper titles, venues and method names are never translated.
+
 ## Run
 
 需要 Node ≥ 20。

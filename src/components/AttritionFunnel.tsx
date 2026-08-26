@@ -1,6 +1,8 @@
 import type { CSSProperties } from 'react';
 import type { FunnelStage, Source } from '../data/types';
-import { useElementWidth } from './hooks';
+import type { LText } from '../i18n/i18n';
+import { t, useLang } from '../i18n/i18n';
+import { useElementWidth, wrapText } from './hooks';
 import { SourceCite } from './SourceCite';
 import './AttritionFunnel.css';
 
@@ -10,45 +12,25 @@ const ZERO_SIDE = 16;
 const WIDE_AT = 560;
 const LABEL_FONT = 13;
 const LABEL_LINE = 16;
+/** `letter-spacing` of .funnel__label / .funnel__note, in em. */
+const LABEL_TRACK = 0.005;
 const NOTE_FONT = 10.5;
 const NOTE_LINE = 14;
+const NOTE_TRACK = 0.01;
 
-const FULL_WIDTH = /[\u2e80-\u9fff\uff01-\uff60\u3000-\u303f]/;
+/** Fallback name for the whole chart when the caller passes no title. */
+const DEFAULT_ARIA: LText = { en: 'attrition funnel', zh: '衰减漏斗' };
 
-/**
- * Advance-width estimate for SVG <text>, which cannot wrap on its own.
- * Full-width CJK glyphs advance ~1em; latin/mono glyphs are estimated high
- * (0.64em) so a wrapped line never spills past the viewBox on a wider font.
- */
-function textWidth(text: string, fontPx: number): number {
-  let width = 0;
-  for (const ch of text) width += FULL_WIDTH.test(ch) ? fontPx : fontPx * 0.64;
-  return width;
-}
+/** The sr-only mirror is the only accessible path into the hand-rolled SVG. */
+const SR_TITLE: LText = { en: 'Funnel stages, text version', zh: '漏斗各阶段（文字版）' };
 
-/** Greedy per-character wrap (CJK prose has no spaces to break on). */
-function wrapText(text: string, maxPx: number, fontPx: number, maxLines: number): string[] {
-  if (maxPx <= fontPx) return [text];
-  const lines: string[] = [];
-  let line = '';
-  for (const ch of text) {
-    const next = line + ch;
-    if (line !== '' && textWidth(next, fontPx) > maxPx) {
-      lines.push(line);
-      if (lines.length === maxLines) return lines;
-      line = ch;
-      continue;
-    }
-    line = next;
-  }
-  if (line !== '') lines.push(line);
-  return lines.length > 0 ? lines : [text];
-}
+/** Spelled out because the zero stage is drawn as a dashed box, not as text. */
+const ZERO: LText = { en: 'zero', zh: '零' };
 
 export interface AttritionFunnelProps {
   stages: FunnelStage[];
-  title?: string;
-  caption?: string;
+  title?: LText | string;
+  caption?: LText | string;
   source?: Source;
   className?: string;
 }
@@ -56,6 +38,8 @@ export interface AttritionFunnelProps {
 interface Row {
   stage: FunnelStage;
   index: number;
+  label: string;
+  display: string;
   barY: number;
   barLen: number;
   labelLines: string[];
@@ -69,6 +53,7 @@ interface Row {
 }
 
 export function AttritionFunnel({ stages, title, caption, source, className }: AttritionFunnelProps) {
+  const { lang } = useLang();
   const [hostRef, width] = useElementWidth<HTMLDivElement>(760);
   const wide = width >= WIDE_AT;
 
@@ -90,11 +75,16 @@ export function AttritionFunnel({ stages, title, caption, source, className }: A
   const rows: Row[] = [];
   let cursor = 0;
   stages.forEach((stage, index) => {
-    const labelLines = wrapText(stage.label, labelMax, LABEL_FONT, 3);
-    const noteLines = stage.note ? wrapText(stage.note, noteMax, NOTE_FONT, 3) : [];
+    const label = t(stage.label, lang);
+    // English runs wider than its Chinese source, so the wrap budget buys a
+    // fourth line rather than truncation.
+    const labelLines = wrapText(label, labelMax, LABEL_FONT, 4, LABEL_TRACK);
+    const noteLines = stage.note
+      ? wrapText(t(stage.note, lang), noteMax, NOTE_FONT, 3, NOTE_TRACK)
+      : [];
     const labelH = labelLines.length * LABEL_LINE;
     const noteH = noteLines.length * NOTE_LINE;
-    const t = stage.value > 0 && span > 0 ? (Math.log10(stage.value) - lo) / span : 1;
+    const scaled = stage.value > 0 && span > 0 ? (Math.log10(stage.value) - lo) / span : 1;
 
     const top = cursor;
     const contentTop = top + 10;
@@ -106,13 +96,15 @@ export function AttritionFunnel({ stages, title, caption, source, className }: A
 
     rows.push({
       stage,
+      display: t(stage.display, lang),
       index,
+      label,
       top,
       height,
       barY,
       barLen:
         stage.value > 0
-          ? Math.round(MIN_BAR + Math.min(1, Math.max(0, t)) * (barMax - MIN_BAR))
+          ? Math.round(MIN_BAR + Math.min(1, Math.max(0, scaled)) * (barMax - MIN_BAR))
           : 0,
       labelLines,
       labelX: wide ? labelW : 0,
@@ -128,8 +120,8 @@ export function AttritionFunnel({ stages, title, caption, source, className }: A
 
   return (
     <figure className={className ? `funnel ${className}` : 'funnel'}>
-      {title ? <h3 className="funnel__title">{title}</h3> : null}
-      {caption ? <p className="funnel__caption">{caption}</p> : null}
+      {title ? <h3 className="funnel__title">{t(title, lang)}</h3> : null}
+      {caption ? <p className="funnel__caption">{t(caption, lang)}</p> : null}
 
       <div className="funnel__host" ref={hostRef}>
         <svg
@@ -138,13 +130,13 @@ export function AttritionFunnel({ stages, title, caption, source, className }: A
           height={height}
           viewBox={`0 0 ${width} ${height}`}
           role="img"
-          aria-label={title ?? '衰减漏斗'}
+          aria-label={t(title ?? DEFAULT_ARIA, lang)}
         >
           {rows.map((row) => {
             const zero = row.stage.value === 0;
             return (
               <g
-                key={row.stage.label}
+                key={row.label}
                 className="funnel__row"
                 data-provenance={row.stage.provenance}
                 data-zero={zero ? 'true' : undefined}
@@ -212,20 +204,24 @@ export function AttritionFunnel({ stages, title, caption, source, className }: A
                   textAnchor={wide ? 'end' : 'start'}
                 >
                   {row.labelLines.map((line, lineIndex) => (
-                    <tspan key={line} x={row.labelX} dy={lineIndex === 0 ? 0 : LABEL_LINE}>
+                    <tspan
+                      key={`${lineIndex}-${line}`}
+                      x={row.labelX}
+                      dy={lineIndex === 0 ? 0 : LABEL_LINE}
+                    >
                       {line}
                     </tspan>
                   ))}
                 </text>
 
                 <text className="funnel__value" x={width} y={row.valueBaseline} textAnchor="end">
-                  {row.stage.display}
+                  {row.display}
                 </text>
 
                 {row.noteLines.length > 0 ? (
                   <text className="funnel__note" x={barX} y={row.noteBaseline}>
                     {row.noteLines.map((line, lineIndex) => (
-                      <tspan key={line} x={barX} dy={lineIndex === 0 ? 0 : NOTE_LINE}>
+                      <tspan key={`${lineIndex}-${line}`} x={barX} dy={lineIndex === 0 ? 0 : NOTE_LINE}>
                         {line}
                       </tspan>
                     ))}
@@ -237,13 +233,18 @@ export function AttritionFunnel({ stages, title, caption, source, className }: A
         </svg>
       </div>
 
-      <ul className="funnel__sr">
-        {stages.map((stage) => (
-          <li key={stage.label}>
-            {stage.label}：{stage.display}
-            {stage.note ? `（${stage.note}）` : ''}
-          </li>
-        ))}
+      <ul className="funnel__sr" aria-label={t(SR_TITLE, lang)}>
+        {rows.map((row) => {
+          const note = row.stage.note ? t(row.stage.note, lang) : '';
+          const zero = row.stage.value === 0 ? t(ZERO, lang) : '';
+          return (
+            <li key={row.label}>
+              {lang === 'zh'
+                ? `${row.label}：${row.display}${zero ? `（${zero}）` : ''}${note ? `（${note}）` : ''}`
+                : `${row.label}: ${row.display}${zero ? ` (${zero})` : ''}${note ? ` (${note})` : ''}`}
+            </li>
+          );
+        })}
       </ul>
 
       {source ? <SourceCite source={source} /> : null}

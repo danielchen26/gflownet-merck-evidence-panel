@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Section } from '../data/types';
+import { t, useLang } from '../i18n/i18n';
 import { usePrefersReducedMotion } from './hooks';
 import './SectionShell.css';
 
@@ -15,6 +16,7 @@ export interface SectionShellProps {
 }
 
 export function SectionShell({ section, children, active, onActivate, className }: SectionShellProps) {
+  const { lang } = useLang();
   const hostRef = useRef<HTMLElement | null>(null);
   const reduced = usePrefersReducedMotion();
   const [revealed, setRevealed] = useState(false);
@@ -75,21 +77,22 @@ export function SectionShell({ section, children, active, onActivate, className 
       aria-labelledby={`${section.id}-title`}
     >
       <div className="shell__marker">
-        <span className="shell__markerValue">{section.budgetMarker}</span>
+        <span className="shell__markerValue">{t(section.budgetMarker, lang)}</span>
         <span className="shell__markerRule" aria-hidden="true" />
       </div>
 
       <div className="shell__body">
-        <p className="shell__kicker">{section.kicker}</p>
+        <p className="shell__kicker">{t(section.kicker, lang)}</p>
         <h2 className="shell__title" id={`${section.id}-title`}>
-          {section.title}
+          {t(section.title, lang)}
         </h2>
-        <p className="shell__standfirst">{section.standfirst}</p>
+        <p className="shell__standfirst">{t(section.standfirst, lang)}</p>
 
         <div className="shell__prose">
-          {section.body.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
+          {section.body.map((paragraph) => {
+            const text = t(paragraph, lang);
+            return <p key={text}>{text}</p>;
+          })}
         </div>
 
         {children ? <div className="shell__slots">{children}</div> : null}

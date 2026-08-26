@@ -12,7 +12,7 @@
   max-width: 100%;
 }
 
-/* ── panel tone: 蓝 = 理论侧, 琥珀/深红 = 经验侧 ─────────────────────── */
+/* ── panel tone: blue = theory side, amber / deep red = empirical side ── */
 
 .mpdag__panel[data-tone='theory'] {
   --tone: var(--flow);
@@ -45,7 +45,7 @@
 }
 
 .mpdag__panel[data-tone='theory'] .mpdag__badge {
-  /* 理论上独有的那一侧，正是经验上输的那一侧 */
+  /* The side with the unique theoretical claim is the side that loses empirically. */
   fill: var(--verdict);
 }
 
@@ -135,6 +135,11 @@
   line-height: 1.9;
 }
 
+/* Uppercase latin reads as a label with less tracking than the CJK original. */
+html:lang(en) .mpdag__formulaRow dt {
+  letter-spacing: 0.1em;
+}
+
 .mpdag__formulaRow dd {
   margin: 0;
   color: var(--row-tone);
@@ -186,6 +191,11 @@
   font-family: var(--font-mono);
   font-size: 11px;
   line-height: 1.55;
+}
+
+/* The locator says which part of the paper is being cited. */
+.mpdag__locator {
+  color: color-mix(in srgb, var(--vellum) 62%, var(--muted));
 }
 
 .mpdag__sources a {

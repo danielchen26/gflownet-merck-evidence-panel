@@ -1,11 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import type { MouseEvent } from 'react';
 import type { Provenance, Section } from '../data/types';
+import type { Lang, LText } from '../i18n/i18n';
+import { t, UI, useLang } from '../i18n/i18n';
 import { ProvenanceDot, PROVENANCE_LABEL } from './ProvenanceDot';
 import { usePrefersReducedMotion } from './hooks';
 import './Rail.css';
 
 const LEGEND: readonly Provenance[] = ['claimed', 'measured', 'refuted'];
+
+/** Each language is named in its own script, so these labels are not translated. */
+const LANG_LABEL: Record<Lang, string> = { en: 'EN', zh: '中文' };
+const LANGS: readonly Lang[] = ['en', 'zh'];
+
+const NAV: LText = {
+  en: 'Evidence ledger · section navigation',
+  zh: '证据账 · 章节导航',
+};
 
 export interface RailProps {
   sections: Section[];
@@ -13,6 +24,7 @@ export interface RailProps {
 }
 
 export function Rail({ sections, className }: RailProps) {
+  const { lang, setLang } = useLang();
   const reduced = usePrefersReducedMotion();
   const [activeId, setActiveId] = useState<string | null>(sections[0]?.id ?? null);
 
@@ -58,14 +70,32 @@ export function Rail({ sections, className }: RailProps) {
   };
 
   return (
-    <nav className={className ? `rail ${className}` : 'rail'} aria-label="证据账 · 章节导航">
+    <nav className={className ? `rail ${className}` : 'rail'} aria-label={t(NAV, lang)}>
+      {/* First in the DOM so it is the top item on desktop and the leftmost,
+          scroll-pinned item in the <960px top bar. */}
+      <div className="rail__lang" role="group" aria-label={t(UI.langLabel, lang)}>
+        {LANGS.map((code) => (
+          <button
+            key={code}
+            type="button"
+            className="rail__langBtn"
+            lang={code === 'zh' ? 'zh-CN' : 'en'}
+            data-active={lang === code ? 'true' : undefined}
+            aria-pressed={lang === code}
+            onClick={() => setLang(code)}
+          >
+            {LANG_LABEL[code]}
+          </button>
+        ))}
+      </div>
+
       <div className="rail__legend">
-        <p className="rail__legendTitle">认知状态</p>
+        <p className="rail__legendTitle">{t(UI.legendTitle, lang)}</p>
         <ul className="rail__legendList">
           {LEGEND.map((provenance) => (
             <li key={provenance} className="rail__legendItem" data-provenance={provenance}>
               <ProvenanceDot provenance={provenance} size="sm" decorative />
-              <span>{PROVENANCE_LABEL[provenance]}</span>
+              <span>{t(PROVENANCE_LABEL[provenance], lang)}</span>
             </li>
           ))}
         </ul>
@@ -83,8 +113,8 @@ export function Rail({ sections, className }: RailProps) {
                 aria-current={active ? 'true' : undefined}
                 onClick={(event) => onJump(event, section.id)}
               >
-                <span className="rail__marker">{section.budgetMarker}</span>
-                <span className="rail__title">{section.title}</span>
+                <span className="rail__marker">{t(section.budgetMarker, lang)}</span>
+                <span className="rail__title">{t(section.title, lang)}</span>
               </a>
             </li>
           );

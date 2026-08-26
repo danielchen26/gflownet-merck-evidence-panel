@@ -1,8 +1,12 @@
-import { useId } from 'react';
 import type { EvidenceTable as EvidenceTableData } from '../data/types';
+import type { LText } from '../i18n/i18n';
+import { t, useLang } from '../i18n/i18n';
 import { ProvenanceDot } from './ProvenanceDot';
 import { SourceCite } from './SourceCite';
 import './EvidenceTable.css';
+
+/** Told to a screen reader on top of the caption: the region scrolls sideways. */
+const SCROLL_HINT: LText = { en: 'scrollable table', zh: '可横向滚动的表格' };
 
 /**
  * A cell is treated as numeric (mono + tabular-nums) when it carries digits and
@@ -24,24 +28,33 @@ export interface EvidenceTableProps {
 }
 
 export function EvidenceTable({ table, numericColumns, className }: EvidenceTableProps) {
-  const captionId = useId();
+  const { lang } = useLang();
   const forced = numericColumns ? new Set(numericColumns) : null;
+  const caption = t(table.caption, lang);
+  const columns = table.columns.map((column) => t(column, lang));
 
   return (
     <figure className={className ? `etable ${className}` : 'etable'}>
-      <figcaption className="etable__head" id={captionId}>
-        <span className="etable__caption">{table.caption}</span>
-        {table.budgetNote ? <span className="etable__budget">{table.budgetNote}</span> : null}
+      <figcaption className="etable__head">
+        <span className="etable__caption">{caption}</span>
+        {table.budgetNote ? (
+          <span className="etable__budget">{t(table.budgetNote, lang)}</span>
+        ) : null}
       </figcaption>
 
-      <div className="etable__scroll" role="region" aria-labelledby={captionId} tabIndex={0}>
+      <div
+        className="etable__scroll"
+        role="region"
+        aria-label={`${caption} — ${t(SCROLL_HINT, lang)}`}
+        tabIndex={0}
+      >
         <table className="etable__table">
           <thead>
             <tr>
               <th scope="col" className="etable__th etable__th--method">
-                {table.columns[0]}
+                {columns[0]}
               </th>
-              {table.columns.slice(1).map((column, index) => (
+              {columns.slice(1).map((column, index) => (
                 <th
                   scope="col"
                   key={column}
@@ -54,33 +67,39 @@ export function EvidenceTable({ table, numericColumns, className }: EvidenceTabl
             </tr>
           </thead>
           <tbody>
-            {table.rows.map((row) => (
-              <tr
-                key={row.method}
-                className="etable__row"
-                data-emphasis={row.emphasis ? 'true' : undefined}
-                data-provenance={row.provenance}
-              >
-                <th scope="row" className="etable__method">
-                  <span className="etable__methodInner">
-                    {row.provenance ? (
-                      <ProvenanceDot provenance={row.provenance} size="sm" />
-                    ) : null}
-                    <span>{row.method}</span>
-                  </span>
-                </th>
-                {row.cells.map((cell, index) => (
-                  <td
-                    // 同一行内列位置稳定，列序即身份
-                    key={`${table.columns[index + 1] ?? index}`}
-                    className="etable__td"
-                    data-numeric={forced ? forced.has(index + 1) : isNumericCell(cell)}
-                  >
-                    {cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {table.rows.map((row) => {
+              const method = t(row.method, lang);
+              return (
+                <tr
+                  key={method}
+                  className="etable__row"
+                  data-emphasis={row.emphasis ? 'true' : undefined}
+                  data-provenance={row.provenance}
+                >
+                  <th scope="row" className="etable__method">
+                    <span className="etable__methodInner">
+                      {row.provenance ? (
+                        <ProvenanceDot provenance={row.provenance} size="sm" />
+                      ) : null}
+                      <span>{method}</span>
+                    </span>
+                  </th>
+                  {row.cells.map((cell, index) => {
+                    const text = t(cell, lang);
+                    return (
+                      <td
+                        // Column position is stable within a row, so column order is identity.
+                        key={`${columns[index + 1] ?? index}`}
+                        className="etable__td"
+                        data-numeric={forced ? forced.has(index + 1) : isNumericCell(text)}
+                      >
+                        {text}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

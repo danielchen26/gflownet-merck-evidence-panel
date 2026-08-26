@@ -1,17 +1,19 @@
 import type { Provenance } from '../data/types';
+import type { LText } from '../i18n/i18n';
+import { t, useLang } from '../i18n/i18n';
 import './ProvenanceDot.css';
 
-/** Structural colour convention: 蓝 = 理论主张, 琥珀 = 实测证据, 深红 = 被否证. */
-export const PROVENANCE_LABEL: Record<Provenance, string> = {
-  claimed: '理论主张（claimed）',
-  measured: '实测证据（measured）',
-  refuted: '被否证（refuted）',
+/** Structural colour convention: blue = theory claim, amber = measured, deep red = refuted. */
+export const PROVENANCE_LABEL: Record<Provenance, LText> = {
+  claimed: { en: 'theory claim (claimed)', zh: '理论主张（claimed）' },
+  measured: { en: 'measured evidence (measured)', zh: '实测证据（measured）' },
+  refuted: { en: 'refuted (refuted)', zh: '被否证（refuted）' },
 };
 
 export interface ProvenanceDotProps {
   provenance: Provenance;
   /** Extra tooltip line, e.g. the benchmark or budget this datum came from. */
-  detail?: string;
+  detail?: LText | string;
   size?: 'sm' | 'md';
   /** The colour meaning is already spelled out next to the dot: no tooltip, no tab stop. */
   decorative?: boolean;
@@ -25,8 +27,9 @@ export function ProvenanceDot({
   decorative = false,
   className,
 }: ProvenanceDotProps) {
-  const label = PROVENANCE_LABEL[provenance];
-  const tip = detail ? `${label} · ${detail}` : label;
+  const { lang } = useLang();
+  const label = t(PROVENANCE_LABEL[provenance], lang);
+  const tip = detail ? `${label} · ${t(detail, lang)}` : label;
 
   if (decorative) {
     return (

@@ -13,6 +13,49 @@
   z-index: 20;
 }
 
+/* ── language switcher ─────────────────────────────────────────────── */
+
+.rail__lang {
+  display: flex;
+  flex: 0 0 auto;
+  width: max-content;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+
+.rail__langBtn {
+  min-height: 32px;
+  padding: 0 var(--s3);
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.rail__langBtn + .rail__langBtn {
+  border-left: 1px solid var(--rule);
+}
+
+.rail__langBtn:hover {
+  background: color-mix(in srgb, var(--vellum) 6%, transparent);
+  color: var(--vellum);
+}
+
+.rail__langBtn:focus-visible {
+  outline: 2px solid var(--flow);
+  outline-offset: -2px;
+}
+
+.rail__langBtn[data-active='true'] {
+  background: color-mix(in srgb, var(--assay) 16%, transparent);
+  color: var(--assay);
+}
+
 /* ── legend ────────────────────────────────────────────────────────── */
 
 .rail__legendTitle {
@@ -22,6 +65,11 @@
   font-size: 10px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+}
+
+/* Uppercase latin needs less tracking than the CJK original to read as a label. */
+html:lang(en) .rail__legendTitle {
+  letter-spacing: 0.14em;
 }
 
 .rail__legendList {
@@ -106,7 +154,7 @@
   line-height: 1.35;
 }
 
-/* ── <960px: 顶部横向可滚动条 ───────────────────────────────────────── */
+/* ── <960px: horizontally scrollable top bar ───────────────────────── */
 
 @media (max-width: 960px) {
   .rail {
@@ -120,6 +168,18 @@
     border-right: 0;
     border-bottom: 1px solid var(--rule);
     background: var(--ink);
+  }
+
+  /* The rail itself is the scroll container here, so the switcher is pinned to
+     the left edge with an opaque backdrop: chips scroll underneath it. */
+  .rail__lang {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    flex: 0 0 auto;
+    margin-right: var(--s1);
+    background: var(--ink);
+    box-shadow: var(--s3) 0 0 var(--ink);
   }
 
   .rail__legend {
@@ -140,7 +200,8 @@
     gap: var(--s3);
   }
 
-  /* 视觉上收起，但保留给读屏 —— 顶部条上颜色是唯一的可见编码 */
+  /* Collapsed visually, kept for screen readers — on the top bar the dot colour
+     is the only visible encoding. */
   .rail__legendItem span {
     position: absolute;
     width: 1px;
@@ -182,6 +243,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .rail__link {
+    transition: none;
+  }
+
+  .rail__langBtn {
     transition: none;
   }
 }

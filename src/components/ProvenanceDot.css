@@ -40,7 +40,7 @@
 }
 
 .pdot[data-provenance='refuted'] .pdot__core {
-  /* 被否证：实心圆 + 空心环，形状本身也编码状态（不只靠颜色） */
+  /* Refuted: ring instead of disc, so the shape encodes the state too, not just the colour. */
   background: transparent;
   border: 2px solid var(--pdot-color);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pdot-color) 18%, transparent);
@@ -49,7 +49,8 @@
 .pdot__tip {
   position: absolute;
   bottom: calc(100% + var(--s2));
-  /* 左对齐而非居中：dot 常常贴在（可横向滚动的）容器左缘，居中会被裁掉 */
+  /* Left-aligned, not centred: the dot often sits against the left edge of a
+     horizontally scrollable container, where a centred tip gets clipped. */
   left: -2px;
   transform: translateY(2px);
   z-index: 40;
@@ -66,7 +67,8 @@
   line-height: 1.45;
   letter-spacing: 0.01em;
   text-align: left;
-  /* display:none 而不是 opacity:0 —— 隐藏的 tooltip 不得撑大祖先的滚动区域 */
+  /* display:none rather than opacity:0 — a hidden tooltip must not inflate an
+     ancestor's scrollable area. */
   display: none;
   pointer-events: none;
 }

@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import './RewardLandscape.css'
+import { t, useLang, UI } from '../i18n/i18n'
 
 /* ---------------------------------------------------------------------------
    The signature element.
@@ -270,7 +271,29 @@ function Surface() {
   )
 }
 
+const S = {
+  betaLabel: { en: 'reward exponent β', zh: 'reward 指数 β' },
+  note: {
+    en: 'The slider only stops at the five β values Kim et al. report, so the readout on the right is always a measured value, never an interpolation.',
+    zh: '滑块只停在 Kim et al. 论文报告的五个 β 取值上 —— 所以右侧读数始终是实测值，不是插值。',
+  },
+  auc: { en: 'PMO AUC-top10', zh: 'PMO AUC-top10' },
+  div: { en: 'Tanimoto diversity', zh: 'Tanimoto diversity' },
+  occupied: { en: 'Modes occupied (of 5)', zh: '被占据的 mode（共 5）' },
+  onTop: { en: 'Samples on the tallest mode', zh: '落在最高 mode 上的样本' },
+  measuredWord: { en: 'measured value', zh: '实测值' },
+  caveat: {
+    en: 'Note that this diversity is Tanimoto internal diversity — the very metric Xie et al. (ICLR 2023) proved violates monotonicity, and which they say "should be avoided as a descriptor for exploration". The measured results under #Circles are in the next section.',
+    zh: '注意这里的 diversity 是 Tanimoto internal diversity —— 正是 Xie et al. (ICLR 2023) 用公理证明违反单调性、"should be avoided as a descriptor for exploration"的那个指标。换成 #Circles 后的实测结果见下一节。',
+  },
+  src: {
+    en: 'Surface and samples are illustrative; AUC / diversity are taken from Genetic-guided GFlowNets, Kim et al., NeurIPS 2024, Fig. 3 (PMO, 23 oracles · 10k calls · 5 seeds) —',
+    zh: '曲面与样本为示意；AUC / diversity 取自 Genetic-guided GFlowNets, Kim et al., NeurIPS 2024, Fig. 3（PMO 23 oracle · 10k 调用 · 5 seed） ——',
+  },
+} as const
+
 export default function RewardLandscape() {
+  const { lang } = useLang()
   const [idx, setIdx] = useState(0)
   const stop = BETA_STOPS[idx]
   const [reduced, setReduced] = useState(false)
@@ -317,12 +340,12 @@ export default function RewardLandscape() {
           />
         </Canvas>
 
-        <div className="rl__badge u-mono">模拟 · illustration</div>
+        <div className="rl__badge u-mono">{t(UI.simulation, lang)}</div>
       </div>
 
       <div className="rl__panel">
         <label className="rl__control" htmlFor="beta">
-          <span className="u-kicker">reward 指数 β</span>
+          <span className="u-kicker">{t(S.betaLabel, lang)}</span>
           <input
             id="beta"
             type="range"
@@ -338,29 +361,24 @@ export default function RewardLandscape() {
           </output>
         </label>
 
-        <p className="rl__note">
-          滑块只停在 Kim et al. 论文报告的五个 β 取值上 —— 所以右侧读数始终是{' '}
-          <span className="p-measured">实测值</span>，不是插值。
-        </p>
+        <p className="rl__note">{t(S.note, lang)}</p>
 
         <dl className="rl__readout">
           <div className="rl__row">
-            <dt>PMO AUC-top10</dt>
+            <dt>{t(S.auc, lang)}</dt>
             <dd className="u-mono p-measured">{stop.auc.toFixed(3)}</dd>
           </div>
           <div className="rl__row">
-            <dt>Tanimoto diversity</dt>
+            <dt>{t(S.div, lang)}</dt>
             <dd className="u-mono p-measured">{stop.div.toFixed(3)}</dd>
           </div>
           <div className="rl__row rl__row--sim">
-            <dt>被占据的 mode（共 {MODES.length}）</dt>
+            <dt>{t(S.occupied, lang)}</dt>
             <dd className="u-mono">{stats.occupied}</dd>
           </div>
           <div className="rl__row rl__row--sim">
-            <dt>落在最高 mode 上的样本</dt>
-            <dd className="u-mono">
-              {Math.round((stats.onTop / POINTS) * 100)}%
-            </dd>
+            <dt>{t(S.onTop, lang)}</dt>
+            <dd className="u-mono">{Math.round((stats.onTop / POINTS) * 100)}%</dd>
           </div>
         </dl>
 
@@ -377,19 +395,45 @@ export default function RewardLandscape() {
 
         <p className={`rl__verdict ${beatsBoth ? 'is-win' : 'is-loss'}`}>
           {beatsBoth ? (
-            <>
-              β = {stop.beta}：在 AUC 与 diversity 上{' '}
-              <strong>同时</strong>优于 Mol GA 与 REINVENT。这是 GFlowNet
-              唯一站得住的加分项，幅度 +
-              {(stop.auc - REFERENCES[0].auc).toFixed(3)} AUC。
-            </>
+            lang === 'en' ? (
+              <>
+                β = {stop.beta}: beats both Mol GA and REINVENT on AUC{' '}
+                <strong>and</strong> diversity at the same time. This is GFlowNet's one
+                defensible win, worth +{(stop.auc - REFERENCES[0].auc).toFixed(3)} AUC.
+              </>
+            ) : (
+              <>
+                β = {stop.beta}：在 AUC 与 diversity 上<strong>同时</strong>优于 Mol GA 与
+                REINVENT。这是 GFlowNet 唯一站得住的加分项，幅度 +
+                {(stop.auc - REFERENCES[0].auc).toFixed(3)} AUC。
+              </>
+            )
           ) : stop.div > REFERENCES[0].div ? (
+            lang === 'en' ? (
+              <>
+                β = {stop.beta}: diversity is high, but AUC is{' '}
+                <span className="p-refuted">
+                  {(REFERENCES[0].auc - stop.auc).toFixed(3)} below Mol GA
+                </span>
+                . The diversity was bought by giving up performance.
+              </>
+            ) : (
+              <>
+                β = {stop.beta}：diversity 高，但 AUC{' '}
+                <span className="p-refuted">
+                  低于 Mol GA {(REFERENCES[0].auc - stop.auc).toFixed(3)}
+                </span>
+                。多样性是靠放弃性能换来的。
+              </>
+            )
+          ) : lang === 'en' ? (
             <>
-              β = {stop.beta}：diversity 高，但 AUC{' '}
+              β = {stop.beta}: AUC is at its highest, but diversity{' '}
               <span className="p-refuted">
-                低于 Mol GA {(REFERENCES[0].auc - stop.auc).toFixed(3)}
+                has fallen to {stop.div.toFixed(3)}, below REINVENT's{' '}
+                {REFERENCES[1].div.toFixed(3)}
               </span>
-              。多样性是靠放弃性能换来的。
+              . Performance costs you the diversity advantage.
             </>
           ) : (
             <>
@@ -403,15 +447,10 @@ export default function RewardLandscape() {
           )}
         </p>
 
-        <p className="rl__caveat">
-          注意这里的 diversity 是 Tanimoto internal diversity —— 正是 Xie et al.
-          (ICLR 2023) 用公理证明违反单调性、"should be avoided as a descriptor for
-          exploration"的那个指标。换成 #Circles 后的实测结果见下一节。
-        </p>
+        <p className="rl__caveat">{t(S.caveat, lang)}</p>
 
         <figcaption className="rl__src u-mono">
-          曲面与样本为示意；AUC / diversity 取自 Genetic-guided GFlowNets, Kim et
-          al., NeurIPS 2024, Fig. 3（PMO 23 oracle · 10k 调用 · 5 seed） ——{' '}
+          {t(S.src, lang)}{' '}
           <a href="https://arxiv.org/abs/2402.05961" target="_blank" rel="noreferrer">
             arxiv.org/abs/2402.05961
           </a>

@@ -26,6 +26,11 @@
   text-transform: uppercase;
 }
 
+/* 0.18em is tuned for the CJK stamp; uppercase latin needs less tracking. */
+html:lang(en) .gaps__stamp {
+  letter-spacing: 0.12em;
+}
+
 .gaps__title {
   max-width: 34ch;
   margin: 0;

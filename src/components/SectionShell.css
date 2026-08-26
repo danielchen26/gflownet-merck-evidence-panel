@@ -69,6 +69,12 @@
   text-transform: uppercase;
 }
 
+/* .u-kicker-style tracking: 0.22em is tuned for CJK; uppercase latin reads
+   tighter, so the English view gets a shorter track. */
+html:lang(en) .shell__kicker {
+  letter-spacing: 0.14em;
+}
+
 .shell__title {
   max-width: 26ch;
   margin: 0 0 var(--s6);

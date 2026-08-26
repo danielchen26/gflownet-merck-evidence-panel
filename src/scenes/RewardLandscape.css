@@ -1,0 +1,188 @@
+.rl {
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(320px, 0.68fr);
+  gap: var(--s8);
+  margin: var(--s16) 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding-block: var(--s8);
+}
+
+.rl__stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  min-height: 340px;
+  /* min-height + aspect-ratio makes the browser derive width from height,
+     which overflows narrow containers. Clamp width so the ratio yields. */
+  max-width: 100%;
+  background: linear-gradient(180deg, #131722 0%, #0d1017 100%);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  cursor: grab;
+}
+.rl__stage canvas {
+  display: block;
+}
+
+.rl__badge {
+  position: absolute;
+  top: var(--s3);
+  left: var(--s3);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: rgba(16, 19, 28, 0.72);
+  border: 1px solid var(--rule);
+  padding: 2px var(--s2);
+  pointer-events: none;
+}
+
+.rl__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  padding-top: var(--s2);
+}
+
+.rl__control {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: 'label beta' 'slider slider';
+  gap: var(--s2) var(--s3);
+  align-items: baseline;
+}
+.rl__control > .u-kicker {
+  grid-area: label;
+}
+.rl__beta {
+  grid-area: beta;
+  font-size: 0.875rem;
+  color: var(--vellum);
+}
+.rl__control input[type='range'] {
+  grid-area: slider;
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  /* 24px keeps the pointer target usable; the 2px rule is painted on the
+     track pseudo-element, not on the control itself. */
+  height: 24px;
+  margin: 0;
+  cursor: pointer;
+}
+.rl__control input[type='range']::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--ink-4);
+}
+.rl__control input[type='range']::-moz-range-track {
+  height: 2px;
+  background: var(--ink-4);
+}
+.rl__control input[type='range']::-webkit-slider-thumb {
+  margin-top: -6px;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--assay);
+  border: 2px solid var(--ink);
+  box-shadow: 0 0 0 1px var(--assay-dim);
+}
+.rl__control input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--assay);
+}
+
+.rl__note,
+.rl__caveat {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--vellum-dim);
+  margin: 0;
+}
+.rl__caveat {
+  color: var(--muted);
+  font-size: 0.75rem;
+  border-left: 2px solid var(--rule-strong);
+  padding-left: var(--s3);
+}
+
+.rl__readout {
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+.rl__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s4);
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.rl__row dt {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--vellum-dim);
+}
+.rl__row dd {
+  margin: 0;
+  font-size: 1.0625rem;
+  color: var(--vellum);
+}
+.rl__row--sim dd {
+  color: var(--muted);
+}
+
+.rl__refs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rl__ref {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.rl__verdict {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+  padding: var(--s3);
+  border: 1px solid var(--rule);
+  color: var(--vellum);
+}
+.rl__verdict.is-win {
+  border-left: 2px solid var(--assay);
+}
+.rl__verdict.is-loss {
+  border-left: 2px solid var(--verdict);
+}
+
+.rl__src {
+  font-size: 0.625rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+.rl__src a {
+  color: var(--flow);
+}
+
+@media (max-width: 980px) {
+  .rl {
+    grid-template-columns: 1fr;
+  }
+  .rl__stage {
+    aspect-ratio: 3 / 2;
+    min-height: 0;
+  }
+}

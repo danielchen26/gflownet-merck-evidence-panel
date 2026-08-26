@@ -1,0 +1,187 @@
+.rail {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s8);
+  max-height: 100vh;
+  padding: var(--s12) var(--s6) var(--s8) 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-right: 1px solid var(--rule);
+  z-index: 20;
+}
+
+/* ── legend ────────────────────────────────────────────────────────── */
+
+.rail__legendTitle {
+  margin: 0 0 var(--s3);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.rail__legendList {
+  display: grid;
+  gap: var(--s2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rail__legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* ── section list ──────────────────────────────────────────────────── */
+
+.rail__list {
+  display: grid;
+  gap: var(--s1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.rail__item {
+  margin: 0;
+}
+
+.rail__link {
+  display: grid;
+  gap: 2px;
+  padding: var(--s2) var(--s3);
+  border-left: 2px solid transparent;
+  border-radius: 0 2px 2px 0;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.rail__link:hover {
+  background: color-mix(in srgb, var(--vellum) 5%, transparent);
+  color: var(--vellum);
+}
+
+.rail__link:focus-visible {
+  outline: 2px solid var(--flow);
+  outline-offset: 1px;
+}
+
+.rail__link[data-active='true'] {
+  border-left-color: var(--assay);
+  background: color-mix(in srgb, var(--assay) 8%, transparent);
+  color: var(--vellum);
+}
+
+.rail__marker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.rail__link[data-active='true'] .rail__marker {
+  color: var(--assay);
+}
+
+.rail__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* ── <960px: 顶部横向可滚动条 ───────────────────────────────────────── */
+
+@media (max-width: 960px) {
+  .rail {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--s4);
+    max-height: none;
+    padding: var(--s2) var(--s3);
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--ink);
+  }
+
+  .rail__legend {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+    flex: 0 0 auto;
+    padding-right: var(--s4);
+    border-right: 1px solid var(--rule);
+  }
+
+  .rail__legendTitle {
+    display: none;
+  }
+
+  .rail__legendList {
+    display: flex;
+    gap: var(--s3);
+  }
+
+  /* 视觉上收起，但保留给读屏 —— 顶部条上颜色是唯一的可见编码 */
+  .rail__legendItem span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .rail__list {
+    display: flex;
+    flex: 1 1 auto;
+    gap: var(--s2);
+  }
+
+  .rail__item {
+    flex: 0 0 auto;
+  }
+
+  .rail__link {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s2);
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 2px 2px 0 0;
+    white-space: nowrap;
+  }
+
+  .rail__link[data-active='true'] {
+    border-left-color: transparent;
+    border-bottom-color: var(--assay);
+  }
+
+  .rail__title {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail__link {
+    transition: none;
+  }
+}

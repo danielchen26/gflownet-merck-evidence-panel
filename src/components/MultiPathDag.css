@@ -1,0 +1,217 @@
+.mpdag {
+  margin: var(--s8) 0;
+}
+
+.mpdag__host {
+  width: 100%;
+  overflow: hidden;
+}
+
+.mpdag__svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── panel tone: 蓝 = 理论侧, 琥珀/深红 = 经验侧 ─────────────────────── */
+
+.mpdag__panel[data-tone='theory'] {
+  --tone: var(--flow);
+}
+
+.mpdag__panel[data-tone='empirical'] {
+  --tone: var(--assay);
+}
+
+.mpdag__frame {
+  fill: color-mix(in srgb, var(--tone) 4%, transparent);
+  stroke: color-mix(in srgb, var(--tone) 30%, var(--rule));
+  stroke-width: 1;
+}
+
+.mpdag__panelTitle {
+  fill: var(--vellum);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.mpdag__badge {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.mpdag__panel[data-tone='theory'] .mpdag__badge {
+  /* 理论上独有的那一侧，正是经验上输的那一侧 */
+  fill: var(--verdict);
+}
+
+.mpdag__panel[data-tone='empirical'] .mpdag__badge {
+  fill: var(--assay);
+}
+
+.mpdag__edge {
+  stroke: color-mix(in srgb, var(--tone) 62%, transparent);
+  stroke-width: 1.4;
+}
+
+.mpdag__panel[data-tone='empirical'] .mpdag__edge {
+  stroke: color-mix(in srgb, var(--vellum) 34%, transparent);
+}
+
+.mpdag__arrow--theory {
+  fill: color-mix(in srgb, var(--flow) 78%, transparent);
+}
+
+.mpdag__arrow--empirical {
+  fill: color-mix(in srgb, var(--vellum) 42%, transparent);
+}
+
+.mpdag__nodeDisc {
+  fill: var(--ink-3);
+  stroke: color-mix(in srgb, var(--tone) 70%, transparent);
+  stroke-width: 1.4;
+}
+
+.mpdag__panel[data-tone='empirical'] .mpdag__nodeDisc {
+  stroke: color-mix(in srgb, var(--vellum) 46%, transparent);
+}
+
+.mpdag__nodeRing {
+  fill: none;
+  stroke: color-mix(in srgb, var(--tone) 40%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.mpdag__nodeLabel {
+  fill: var(--vellum);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.mpdag__panelLine {
+  fill: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.01em;
+}
+
+/* ── formula strip ─────────────────────────────────────────────────── */
+
+.mpdag__formulas {
+  display: grid;
+  gap: var(--s2);
+  margin: var(--s6) 0 0;
+}
+
+.mpdag__formulaRow {
+  display: grid;
+  grid-template-columns: minmax(120px, 190px) 1fr;
+  gap: var(--s2) var(--s4);
+  padding: var(--s3) 0 var(--s3) var(--s4);
+  border-left: 2px solid var(--row-tone);
+}
+
+.mpdag__formulaRow[data-tone='theory'] {
+  --row-tone: var(--flow);
+}
+
+.mpdag__formulaRow[data-tone='naive'] {
+  --row-tone: var(--muted);
+}
+
+.mpdag__formulaRow dt {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.9;
+}
+
+.mpdag__formulaRow dd {
+  margin: 0;
+  color: var(--row-tone);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.mpdag__formulaRow dd span {
+  display: block;
+  margin-top: var(--s1);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ── verdict footnote ──────────────────────────────────────────────── */
+
+.mpdag__footnote {
+  max-width: 62ch;
+  margin: var(--s6) 0 0;
+  padding: var(--s4);
+  border-left: 2px solid var(--verdict);
+  background: color-mix(in srgb, var(--verdict) 7%, transparent);
+  color: var(--vellum);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ── sources ───────────────────────────────────────────────────────── */
+
+.mpdag__sources {
+  display: grid;
+  gap: var(--s2);
+  margin: var(--s4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mpdag__sources li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2) var(--s3);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.mpdag__sources a {
+  color: var(--vellum);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--flow) 55%, transparent);
+  overflow-wrap: anywhere;
+}
+
+.mpdag__sources a:hover {
+  color: var(--flow);
+  border-bottom-color: var(--flow);
+}
+
+.mpdag__sources a:focus-visible {
+  outline: 2px solid var(--flow);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+@media (max-width: 640px) {
+  .mpdag__formulaRow {
+    grid-template-columns: 1fr;
+  }
+
+  .mpdag__formulaRow dt {
+    line-height: 1.4;
+  }
+}

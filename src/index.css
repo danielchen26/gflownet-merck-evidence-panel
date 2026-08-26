@@ -1,0 +1,223 @@
+@import '@fontsource-variable/archivo';
+@import '@fontsource-variable/source-serif-4';
+@import '@fontsource-variable/jetbrains-mono';
+@import './styles/tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--vellum);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.68;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The page is one long argument. A faint vertical flow gradient behind the
+   reading column reads as the DAG the whole subject is about, without
+   becoming decoration. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 78% -8%, rgba(76, 125, 240, 0.1), transparent 62%),
+    radial-gradient(720px 520px at 4% 108%, rgba(255, 176, 32, 0.055), transparent 60%);
+  z-index: 0;
+}
+
+a {
+  color: var(--flow);
+  text-decoration-color: var(--flow-dim);
+  text-underline-offset: 2px;
+}
+a:hover {
+  text-decoration-color: var(--flow);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 700;
+}
+
+::selection {
+  background: var(--flow);
+  color: #fff;
+}
+
+/* ---- app shell ---------------------------------------------------------- */
+
+.app {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  gap: 0;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+
+.app__main {
+  padding: var(--s24) var(--s12) var(--s24);
+  min-width: 0;
+}
+
+/* ---- hero: the thesis, stated as a measured contradiction --------------- */
+
+.hero {
+  padding: var(--s16) 0 var(--s12);
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s8);
+}
+.hero__eyebrow span {
+  color: var(--muted);
+}
+.hero__eyebrow hr {
+  flex: 1;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 108, 'wght' 700;
+  font-size: clamp(2.25rem, 5.6vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  max-width: 26ch;
+  margin-bottom: var(--s8);
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--verdict);
+}
+
+.hero__standfirst {
+  font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
+  line-height: 1.55;
+  color: var(--vellum-dim);
+  max-width: 54ch;
+  margin: 0 0 var(--s12);
+}
+.hero__standfirst strong {
+  color: var(--vellum);
+  font-weight: 600;
+}
+
+/* Three measured contradictions, set as a ledger rather than "stat cards". */
+.ledger {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.ledger__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--s4) var(--s6);
+  align-items: baseline;
+  padding: var(--s4) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.ledger__what {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--vellum-dim);
+}
+.ledger__gfn,
+.ledger__other {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.125rem, 2vw, 1.625rem);
+  white-space: nowrap;
+}
+.ledger__gfn {
+  color: var(--verdict);
+}
+.ledger__other {
+  color: var(--assay);
+}
+.ledger__label {
+  display: block;
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 125, 'wght' 600;
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.hero__disclaimer {
+  margin: var(--s8) 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 68ch;
+}
+
+/* ---- footer ------------------------------------------------------------- */
+
+.foot {
+  margin-top: var(--s24);
+  padding-top: var(--s8);
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.8;
+  color: var(--muted);
+  display: grid;
+  gap: var(--s3);
+}
+
+@media (max-width: 960px) {
+  .app {
+    /* minmax(0,…) not 1fr: the rail collapses to a horizontal scroller whose
+       min-content width would otherwise stretch the whole grid. */
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .app__main {
+    padding: var(--s8) var(--s6) var(--s16);
+  }
+  .hero {
+    padding-top: var(--s8);
+  }
+  .ledger__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s2);
+  }
+}
+
+.scene-fallback {
+  display: grid;
+  place-items: center;
+  margin: var(--s16) 0;
+  min-height: 300px;
+  background: linear-gradient(180deg, #131722 0%, #0d1017 100%);
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+}

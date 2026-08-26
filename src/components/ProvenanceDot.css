@@ -1,0 +1,101 @@
+.pdot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  vertical-align: baseline;
+  border-radius: 999px;
+  outline: none;
+}
+
+.pdot[data-size='md'] {
+  width: 12px;
+  height: 12px;
+}
+
+.pdot[data-size='sm'] {
+  width: 8px;
+  height: 8px;
+}
+
+.pdot[data-provenance='claimed'] {
+  --pdot-color: var(--flow);
+}
+
+.pdot[data-provenance='measured'] {
+  --pdot-color: var(--assay);
+}
+
+.pdot[data-provenance='refuted'] {
+  --pdot-color: var(--verdict);
+}
+
+.pdot__core {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--pdot-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pdot-color) 22%, transparent);
+}
+
+.pdot[data-provenance='refuted'] .pdot__core {
+  /* 被否证：实心圆 + 空心环，形状本身也编码状态（不只靠颜色） */
+  background: transparent;
+  border: 2px solid var(--pdot-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pdot-color) 18%, transparent);
+}
+
+.pdot__tip {
+  position: absolute;
+  bottom: calc(100% + var(--s2));
+  /* 左对齐而非居中：dot 常常贴在（可横向滚动的）容器左缘，居中会被裁掉 */
+  left: -2px;
+  transform: translateY(2px);
+  z-index: 40;
+  max-width: 22ch;
+  width: max-content;
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--pdot-color);
+  border-radius: 2px;
+  background: var(--ink-3);
+  color: var(--vellum);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  text-align: left;
+  /* display:none 而不是 opacity:0 —— 隐藏的 tooltip 不得撑大祖先的滚动区域 */
+  display: none;
+  pointer-events: none;
+}
+
+.pdot:hover .pdot__tip,
+.pdot:focus-visible .pdot__tip {
+  display: block;
+  animation: pdotTipIn 140ms ease both;
+}
+
+@keyframes pdotTipIn {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pdot:focus-visible {
+  outline: 2px solid var(--flow);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdot:hover .pdot__tip,
+  .pdot:focus-visible .pdot__tip {
+    animation: none;
+  }
+}

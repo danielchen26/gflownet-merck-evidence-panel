@@ -1,0 +1,98 @@
+.gaps {
+  margin: var(--s16) 0 var(--s12);
+  padding: var(--s6) 0 var(--s6) var(--s6);
+  border-left: 2px solid var(--verdict);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--verdict) 7%, transparent),
+    transparent 42%
+  );
+}
+
+.gaps__head {
+  margin-bottom: var(--s6);
+}
+
+.gaps__stamp {
+  display: inline-block;
+  margin-bottom: var(--s3);
+  padding: 2px var(--s2);
+  border: 1px dashed color-mix(in srgb, var(--verdict) 55%, transparent);
+  border-radius: 2px;
+  color: var(--verdict);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.gaps__title {
+  max-width: 34ch;
+  margin: 0;
+  color: var(--vellum);
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.8vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.gaps__standfirst {
+  max-width: 62ch;
+  margin: var(--s3) 0 0;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.gaps__list {
+  display: grid;
+  gap: var(--s3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: gaps;
+}
+
+.gaps__item {
+  display: grid;
+  grid-template-columns: 3ch minmax(0, 1fr);
+  gap: var(--s3);
+  max-width: 68ch;
+  padding-bottom: var(--s3);
+  border-bottom: 1px dashed color-mix(in srgb, var(--rule) 100%, transparent);
+}
+
+.gaps__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.gaps__index {
+  color: color-mix(in srgb, var(--verdict) 70%, var(--muted));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.75;
+}
+
+.gaps__text {
+  color: color-mix(in srgb, var(--vellum) 78%, var(--muted));
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.75;
+  letter-spacing: 0.005em;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .gaps {
+    padding-left: var(--s4);
+  }
+
+  .gaps__item {
+    grid-template-columns: 2.5ch minmax(0, 1fr);
+    gap: var(--s2);
+  }
+}

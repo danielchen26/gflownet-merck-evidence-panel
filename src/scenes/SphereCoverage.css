@@ -1,0 +1,197 @@
+.sc {
+  margin: var(--s16) 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s6);
+}
+
+.sc__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s6);
+  flex-wrap: wrap;
+}
+
+.sc__toggle {
+  display: inline-flex;
+  border: 1px solid var(--rule-strong);
+  flex: 0 0 auto;
+}
+.sc__toggle button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  padding: var(--s2) var(--s4);
+  cursor: pointer;
+  transition: color 160ms var(--ease), background-color 160ms var(--ease);
+}
+.sc__toggle button + button {
+  border-left: 1px solid var(--rule-strong);
+}
+.sc__toggle button:hover {
+  color: var(--vellum);
+}
+.sc__toggle button.is-on {
+  background: var(--ink-3);
+  color: var(--vellum);
+}
+
+.sc__lede {
+  margin: 0;
+  flex: 1 1 24ch;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--vellum-dim);
+}
+.sc__lede strong {
+  color: var(--vellum);
+  font-weight: 600;
+}
+
+.sc__stage {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  min-height: 300px;
+  /* see RewardLandscape.css: clamp width so aspect-ratio cannot inflate it */
+  max-width: 100%;
+  background: linear-gradient(180deg, #131722 0%, #0d1017 100%);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  cursor: grab;
+}
+.sc__stage:active {
+  cursor: grabbing;
+}
+.sc__badge {
+  position: absolute;
+  top: var(--s3);
+  left: var(--s3);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: rgba(16, 19, 28, 0.72);
+  border: 1px solid var(--rule);
+  padding: 2px var(--s2);
+  pointer-events: none;
+}
+
+.sc__legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s8);
+}
+.sc__col > p {
+  margin: var(--s2) 0 var(--s3);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--vellum-dim);
+}
+.sc__col dl {
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+.sc__col dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.sc__col dt {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.sc__col dd {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--vellum);
+}
+
+.sc__real {
+  border: 1px solid var(--rule);
+  padding: var(--s6);
+  display: grid;
+  gap: var(--s4);
+}
+
+.sc__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+.sc__table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding-bottom: var(--s3);
+}
+.sc__table th,
+.sc__table td {
+  text-align: right;
+  padding: var(--s2) var(--s3);
+  border-bottom: 1px solid var(--rule);
+}
+.sc__table thead th {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.sc__table tbody th {
+  text-align: left;
+  font-weight: 400;
+  color: var(--vellum);
+}
+.sc__table tbody tr.is-baseline {
+  background: rgba(76, 125, 240, 0.06);
+}
+.sc__table tbody tr.is-refuted th {
+  box-shadow: inset 2px 0 0 var(--verdict);
+}
+
+.sc__note {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: var(--vellum-dim);
+}
+
+.sc__src {
+  font-size: 0.625rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+.sc__src a {
+  color: var(--flow);
+}
+
+@media (max-width: 860px) {
+  .sc__legend {
+    grid-template-columns: 1fr;
+    gap: var(--s6);
+  }
+  .sc__stage {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+  }
+  .sc__real {
+    padding: var(--s4);
+  }
+  .sc__table {
+    display: block;
+    overflow-x: auto;
+  }
+}

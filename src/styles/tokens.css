@@ -1,0 +1,104 @@
+/* ==========================================================================
+   Design tokens — GFlowNet evidence panel
+   Color encodes epistemic status, not decoration:
+     --flow    theoretical claim      (what the objective provably guarantees)
+     --assay   measured evidence      (benchmark / wet-lab number)
+     --verdict refuted claim          (measured to fail, or measured zero)
+   ========================================================================== */
+
+:root {
+  /* ground — deep blue-black, never pure black */
+  --ink: #10131c;
+  --ink-2: #171b27;
+  --ink-3: #1f2534;
+  --ink-4: #2a3244;
+
+  /* type */
+  --vellum: #ece7de;
+  --vellum-dim: #b9b3a8;
+  --muted: #7c8397;
+
+  /* epistemic accents */
+  --flow: #4c7df0;
+  --flow-dim: #2d4f9e;
+  --assay: #ffb020;
+  --assay-dim: #a06d0f;
+  --verdict: #c8323c;
+
+  --rule: rgba(236, 231, 222, 0.14);
+  --rule-strong: rgba(236, 231, 222, 0.28);
+
+  --font-display: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s6: 24px;
+  --s8: 32px;
+  --s12: 48px;
+  --s16: 64px;
+  --s24: 96px;
+
+  --measure: 62ch;
+  --rail-w: 264px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Archivo's width axis is what gives the display face its signage character.
+   Applied only to display roles, never to reading copy. */
+.u-display {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 112, 'wght' 700;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+
+.u-kicker {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 125, 'wght' 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.u-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'zero' 1;
+}
+
+.u-measure {
+  max-width: var(--measure);
+}
+
+.p-measured {
+  color: var(--assay);
+}
+.p-claimed {
+  color: var(--flow);
+}
+.p-refuted {
+  color: var(--verdict);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--flow);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,5 +1,8 @@
 # GFlowNet for Merck Small-Molecule Design — An Evidence Panel
 
+**Live:** https://danielchen26.github.io/gflownet-merck-evidence-panel/
+
+
 ## What this is
 
 一份决策备忘录《GFlowNet 是否适合作为 Merck 小分子药物生成的未来框架？》（2026-08-25, v2）的交互式呈现，用 React + Three.js 构建。备忘录的每条事实都附有一手来源 URL，本面板只做呈现，不新增任何主张。

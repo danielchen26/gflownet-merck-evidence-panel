@@ -5,6 +5,7 @@ import { EvidenceTable } from './components/EvidenceTable'
 import { AttritionFunnel } from './components/AttritionFunnel'
 import { MultiPathDag } from './components/MultiPathDag'
 import { GapsPanel } from './components/GapsPanel'
+import { IntegrationStack } from './components/IntegrationStack'
 import { sections, openGaps } from './data/sections'
 import { tables, merckFunnel, sources } from './data/evidence'
 import { t, UI, useLang } from './i18n/i18n'
@@ -152,6 +153,7 @@ export default function App() {
             {t(COPY.standfirst, lang)} <strong>{t(COPY.standfirstPunch, lang)}</strong>
           </p>
 
+          <p className="ledger__caption">{t(UI.ledgerCaption, lang)}</p>
           <div className="ledger">
             {LEDGER.map((row) => (
               <div className="ledger__row" key={row.what.en}>
@@ -219,6 +221,12 @@ export default function App() {
             {TABLE['synga-litpcba'] && <EvidenceTable table={TABLE['synga-litpcba']} />}
             {TABLE['saturn-vs-rgfn'] && <EvidenceTable table={TABLE['saturn-vs-rgfn']} />}
             {TABLE['s3gfn-retro'] && <EvidenceTable table={TABLE['s3gfn-retro']} />}
+          </SectionShell>
+        )}
+
+        {SECTION['integration'] && (
+          <SectionShell section={SECTION['integration']}>
+            <IntegrationStack />
           </SectionShell>
         )}
 

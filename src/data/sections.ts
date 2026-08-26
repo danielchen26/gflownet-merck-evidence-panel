@@ -2,7 +2,7 @@ import type { LText } from '../i18n/i18n';
 import type { Section } from './types';
 
 /**
- * 决策叙事：把 14 节备忘录压成 8 节，面向"要不要立项"的读者。
+ * 决策叙事：把 14 节备忘录压成 9 节，面向"要不要立项、以及装在哪一层"的读者。
  *
  * `budgetMarker` 是结构标记，用 oracle 预算 / 关键量而非 01/02/03 —— 因为整份
  * 备忘录的论证轴就是"在固定 oracle 预算下谁赢"。
@@ -13,28 +13,32 @@ import type { Section } from './types';
 export const sections: Section[] = [
   {
     id: 'verdict',
-    budgetMarker: { en: 'Verdict', zh: '结论' },
-    kicker: { en: 'Decision', zh: '决策' },
+    budgetMarker: { en: 'Placement', zh: '定位' },
+    kicker: { en: 'Placement', zh: '定位' },
     title: {
-      en: 'Do not fund GFlowNet as a framework',
-      zh: '不要把 GFlowNet 当框架立项',
+      en: 'GFlowNet is a layer, not a platform',
+      zh: 'GFlowNet 是一层，不是一个平台',
     },
     standfirst: {
-      en: 'It is one optional objective function at the sampler layer, and in 2026 the leverage is not in the sampler.',
-      zh: '它是 sampler 层的一个可选目标函数，而 2026 年的杠杆不在 sampler。',
+      en: 'It sits at the sampler-objective layer, and it has been proven to belong to the KL-regularised RL family — so integrating it is a loss-layer change inside REINVENT4 / AIDDISON, not a platform migration. The binding constraint sits one layer below, at the oracle.',
+      zh: '它位于 sampler objective 层，且已被证明属于 KL 正则 RL 族 —— 所以集成它是 REINVENT4 / AIDDISON 内部的 loss 层改动，而不是平台迁移。真正的绑定约束在下面一层：oracle。',
     },
     body: [
       {
-        en: 'Three independent evidence chains each suffice on their own. First, it loses under a fixed oracle budget: in the original PMO table GFlowNet scores 9.131 (16/25) and GFlowNet-AL 8.406 (22/25), while random screening of ZINC-250k scores 8.635 (19/25) and REINVENT 14.196 (1/25). Second, its one differentiating selling point — diversity — is refuted by the one fair comparison: in a benchmark with controlled budgets where every method is given a diversity filter, GFlowNet finds 0 diverse hits on DRD2 and JNK3, while random virtual screening finds 21 and 15. Third, its real contribution — the reaction-template synthesizable MDP — has nothing to do with the flow objective, and has already been beaten by simpler samplers at 1/4 to 1/400 of the budget.',
-        zh: '三条独立证据链各自都足以支撑这个结论。第一，固定 oracle 预算下它输：PMO 原表里 GFlowNet 9.131（16/25）、GFlowNet-AL 8.406（22/25），而随机筛选 ZINC-250k 是 8.635（19/25）、REINVENT 是 14.196（1/25）。第二，它唯一的差异化卖点（多样性）在唯一一次公平对照中被否证 —— 在预算受控、给所有方法都装上 diversity filter 的 benchmark 里，GFlowNet 在 DRD2 与 JNK3 上的 diverse hits 是 0，而随机虚拟筛选是 21 和 15。第三，它真正的贡献（reaction-template 合成可达 MDP）与 flow 目标无关，且已被更简单的 sampler 在 1/4 到 1/400 的预算下超越。',
+        en: 'What the evidence constrains is the framework-level bet, not the technique. Under a fixed oracle budget the flow objective loses: in the original PMO table GFlowNet scores 9.131 (16/25) and GFlowNet-AL 8.406 (22/25), while random screening of ZINC-250k scores 8.635 (19/25) and REINVENT 14.196 (1/25). Its one differentiating selling point — diversity — does not survive the one fair comparison either: with matched budgets and a diversity filter given to every method, GFlowNet finds 0 diverse hits on DRD2 and JNK3, where random virtual screening finds 21 and 15. And the total number of molecules any GFlowNet method has synthesized and assayed is 0. Not one of these numbers is retired here — they stay, and their job changes: from a reason not to touch it, to the constraint on which layers it can be trusted to carry.',
+        zh: '证据约束的是框架级押注，不是这项技术本身。固定 oracle 预算下 flow 目标输：PMO 原表里 GFlowNet 9.131（16/25）、GFlowNet-AL 8.406（22/25），而随机筛选 ZINC-250k 是 8.635（19/25）、REINVENT 是 14.196（1/25）。它唯一的差异化卖点（多样性）也没能通过唯一一次公平对照：预算匹配、所有方法都装上 diversity filter 时，GFlowNet 在 DRD2 与 JNK3 上的 diverse hits 是 0，而随机虚拟筛选是 21 和 15。任何 GFlowNet 方法合成并测活的分子总数是 0。这些数字一个都不作废 —— 它们留在原处，只是角色变了：从"不要碰它的理由"，变成"它能装在哪一层"的约束。',
       },
       {
-        en: 'The real bottleneck is given by Merck\'s own project data. Merck & Co. and Stanford ran the non-GFlowNet SyntheMol-RL against one internal target for a year: of 12,796 generated molecules, 0 met both the potency and the docking threshold; 111 were finally synthesized and assayed, and only 4 had IC₅₀ < 10 μM (3.6%), while the historical library of that same project already contained 95 single-digit nM compounds. The team\'s own conclusion: the molecules failed because the property predictors are inaccurate, not because the generator is inadequate.',
-        zh: '真正的瓶颈由 Merck 自己的项目数据给出。Merck & Co. 与 Stanford 用非 GFlowNet 的 SyntheMol-RL 在一个内部靶点上跑了一年：12,796 个生成分子里 0 个同时满足 potency 与 docking 双阈值；最终合成测活 111 个，只有 4 个 IC₅₀ < 10 μM（3.6%），而同一项目历史库里已有 95 个单位数 nM 化合物。团队自己的结论是：分子失败的原因是性质预测器不准，不是生成器不行。',
+        en: 'But losing as a platform is not the same as having no place. The stack has four layers — oracle, action space, sampler objective, search operator — and GFlowNet occupies exactly one of them: L3, the sampler objective. It also contributed the largest single measured win at L2: hold the GFlowNet fixed and change only the MDP, and fragment → reaction lifts the independent AiZynthFinder success rate from 0% to 62% — a gain that is objective-function agnostic and collectable with a GA or with plain RL. At L4 it holds a lever nobody else holds: off-policy validity absorbs GA operators, local search, MCMC and offline expert data into one amortised policy without distributional bias (Genetic GFN 16.213; remove genetic search → 15.738).',
+        zh: '但"作为平台输"不等于"没有位置"。栈有四层 —— oracle、action space、sampler objective、search operator —— GFlowNet 恰好占其中一层：L3，sampler objective。它同时在 L2 贡献了实测最大的单点收益：固定住 GFlowNet 只换 MDP，fragment → reaction 使独立 AiZynthFinder 成功率从 0% 跳到 62% —— 这个收益与目标函数无关，用 GA 或普通 RL 都能拿到。在 L4 它握有别人没有的杠杆：off-policy 有效性可把 GA 算子、local search、MCMC 与离线专家数据无偏地吸收进同一个摊销策略（Genetic GFN 16.213；去掉 genetic search → 15.738）。',
       },
       {
-        en: '→ Spend the budget on the oracle (property predictors, affinity models, independent retrosynthesis) and on the MPO specification, not on swapping the sampler.',
-        zh: '→ 把预算投在 oracle（性质预测器、亲和力模型、独立 retrosynthesis）与 MPO 规格上，而不是换 sampler。',
+        en: 'The integration path is correspondingly narrow and cheap. GFlowNets and MaxEnt RL are "one and the same, up to a correction of the reward function" (Tiapkin, AISTATS 2024 Oral); Trajectory Balance ≡ Path Consistency Learning and Modified Detailed Balance ≡ a Soft Q-Learning variant (Deleu, UAI 2024); Relative Trajectory Balance ≡ Trust-PCL (Deleu 2025). Getting the properties therefore takes (a) the multi-path reward correction — only when a fragment or reaction MDP is genuinely in use — plus (b) one KL regularisation term. Both are loss-layer edits that drop straight into the RL loops REINVENT4 / AIDDISON already run, with no requalification of a commercial product.',
+        zh: '相应地，集成路径既窄又便宜。GFlowNets 与 MaxEnt RL 是 "one and the same, up to a correction of the reward function"（Tiapkin, AISTATS 2024 Oral）；Trajectory Balance ≡ Path Consistency Learning、Modified Detailed Balance ≡ Soft Q-Learning 变体（Deleu, UAI 2024）；Relative Trajectory Balance ≡ Trust-PCL（Deleu 2025）。所以要它的性质只需 (a) 多路径 reward correction —— 仅当真用 fragment 或 reaction MDP —— 加 (b) 一个 KL 正则项。两者都是 loss 层改动，可直接进 REINVENT4 / AIDDISON 已在跑的 RL 循环，不触发商业产品的重新资格认证。',
+      },
+      {
+        en: '→ First: put the money on the oracle (property predictors, affinity models, independent retrosynthesis) and fix the MPO specification — Merck & Co.\'s own project traced a 3.6% wet-lab hit rate to predictors at R² 0.66 / 0.76, not to the sampler. Then close the L3 argument the only way it can be closed: an equal-budget comparison on one internal target, same action space and same reward, with GFlowNet entering the production roadmap only if it wins on both potency and #Circles.',
+        zh: '→ 先做两件事：把钱投在 oracle（性质预测器、亲和力模型、独立 retrosynthesis）上，并修 MPO 规格 —— Merck & Co. 自己的项目把 3.6% 的湿实验命中率归因于 R² 0.66 / 0.76 的预测器，而不是 sampler。然后用唯一可行的方式关闭 L3 的争论：一个内部靶点上的等预算对照，同一动作空间、同一 reward，只有 GFlowNet 同时赢 potency 与 #Circles 才进生产路线图。',
       },
     ],
     tableIds: ['pmo-original'],
@@ -185,6 +189,59 @@ export const sections: Section[] = [
     ],
   },
   {
+    id: 'integration',
+    budgetMarker: { en: 'loss-level', zh: 'loss 级' },
+    kicker: { en: 'Integration', zh: '集成' },
+    title: {
+      en: 'How it plugs into the stack',
+      zh: '它如何插进现有的栈',
+    },
+    standfirst: {
+      en: 'GFlowNets ≡ MaxEnt RL up to a reward correction; Trajectory Balance ≡ PCL; Relative Trajectory Balance ≡ Trust-PCL — so getting its properties needs no new framework, only two loss-layer changes.',
+      zh: 'GFlowNets ≡ MaxEnt RL up to a reward correction；Trajectory Balance ≡ PCL；Relative Trajectory Balance ≡ Trust-PCL —— 所以要它的性质不需要新框架，只需两个 loss 级改动。',
+    },
+    body: [
+      {
+        en: 'L1 — the oracle. This is where the binding constraint lives, and it is the one layer no sampler change can relieve. Merck & Co.\'s Program 1 ran on two Chemprop-RDKit ensembles as the oracle: R² 0.66 ± 0.03 on experimental potency, R² 0.76 ± 0.01 on docking. Of 12,796 generated molecules 0 met both thresholds; 111 were finally synthesized and assayed and 4 came in under IC₅₀ 10 μM (3.6%). What changed in 2026 is the supply side: Boltz-2 approaches FEP accuracy on the FEP+ benchmark at >1000× the speed, with code and weights both MIT; BoltzMol-1 — oracle plus catalogue purchase only, 28–96 compounds per target — returned functional actives or binders on 6 of 10 targets. Money spent at L1 raises the ceiling of every layer above it.',
+        zh: 'L1 —— oracle。绑定约束就在这里，而且这是唯一一层换 sampler 无法缓解的。Merck & Co. 的 Program 1 用两套 Chemprop-RDKit ensemble 当 oracle：实验 potency R² 0.66 ± 0.03、docking R² 0.76 ± 0.01。12,796 个生成分子里 0 个同时满足双阈值；最终合成测活 111 个，4 个 IC₅₀ < 10 μM（3.6%）。2026 年变了的是供给侧：Boltz-2 在 FEP+ 基准上接近 FEP 精度、>1000× 更快，代码与权重均为 MIT；BoltzMol-1 —— 只做 oracle + 目录采购、每靶点 28–96 个化合物 —— 在 10 个靶点中 6 个拿到 functional actives 或 binders。投在 L1 的钱会抬高它上面每一层的天花板。',
+      },
+      {
+        en: 'L2 — the action space, and the real gift of GFlowNet. Hold the sampler fixed and change only the MDP: fragment → reaction lifts the independent AiZynthFinder success rate from 0% to 62%. The gain is objective-function agnostic — a GA or plain RL collects it just as well — which is exactly why it is the highest-return single change available. Its ceiling belongs in the same sentence: under external AiZynthFinder, reaction templates reach only ≤72% (RxnFlow 60.25–71.25%, SynFlowNet 52.75–57%, RGFN 46.75–50.25%), while S3-GFN\'s SMILES soft constraints reach 96.67–100%. Merck KGaA already owns what this layer needs: SYNTHIA\'s >115,000 expert-encoded reaction rules × >12 million purchasable starting materials.',
+        zh: 'L2 —— action space，GFlowNet 真正的馈赠。固定 sampler 只换 MDP：fragment → reaction 使独立 AiZynthFinder 成功率从 0% 跳到 62%。这个收益与目标函数无关 —— 用 GA 或普通 RL 一样能拿到 —— 也正因如此它是投入产出比最高的单点改动。它的天花板必须写在同一句里：外部 AiZynthFinder 下 reaction template 只有 ≤72%（RxnFlow 60.25–71.25%、SynFlowNet 52.75–57%、RGFN 46.75–50.25%），而 S3-GFN 的 SMILES 软约束是 96.67–100%。Merck KGaA 已经拥有这一层需要的东西：SYNTHIA 的 >115,000 条专家编码 reaction rule × >1,200 万可购起始物。',
+      },
+      {
+        en: 'L3 — the sampler objective: this is where GFlowNet plugs in. The theory here is settled. GFlowNets and MaxEnt RL are "one and the same, up to a correction of the reward function" (Tiapkin, AISTATS 2024 Oral); Trajectory Balance ≡ Path Consistency Learning and Modified Detailed Balance ≡ a Soft Q-Learning variant (Deleu, UAI 2024); Relative Trajectory Balance ≡ Trust-PCL, and "KL-regularized RL methods achieve comparable performance" (Deleu 2025). What follows is an integration recipe rather than a migration: (a) the multi-path reward correction, required only when a fragment or reaction MDP is genuinely in use, plus (b) one KL regularisation term. Both are loss-layer edits inside the RL loops REINVENT4 / AIDDISON already run. The constraint on this layer is just as explicit: at a fixed budget vanilla GFN scores 9.131 against REINVENT\'s 14.196, and on SARS-CoV-2 docking vanilla GFlowNet reaches 0.326 / 0.280 against REINVENT\'s 0.717 / 0.799 — so it must be run with a pretrained prior plus KL-to-prior, which independently measures out ahead of REINVENT\'s reward-shaping (validity +18% / exploration +12%, against validity +12% / diversity −20%).',
+        zh: 'L3 —— sampler objective：GFlowNet 就插在这一层。这里的理论已经定论。GFlowNets 与 MaxEnt RL 是 "one and the same, up to a correction of the reward function"（Tiapkin, AISTATS 2024 Oral）；Trajectory Balance ≡ Path Consistency Learning、Modified Detailed Balance ≡ Soft Q-Learning 变体（Deleu, UAI 2024）；Relative Trajectory Balance ≡ Trust-PCL，且"KL-regularized RL methods achieve comparable performance"（Deleu 2025）。由此得到的是一份集成配方，而不是一次迁移：(a) 多路径 reward correction，仅当真用 fragment 或 reaction MDP 时需要；加 (b) 一个 KL 正则项。两者都是 REINVENT4 / AIDDISON 已在跑的 RL 循环内部的 loss 层改动。这一层的约束同样明确：固定预算下 vanilla GFN 9.131 vs REINVENT 14.196，SARS-CoV-2 docking 上 vanilla GFlowNet 0.326 / 0.280 vs REINVENT 0.717 / 0.799 —— 所以它必须配预训练 prior 加 KL-to-prior 才能跑，而 KL-to-prior 本身实测优于 REINVENT 的 reward-shaping（validity +18% / exploration +12%，对比 validity +12% / diversity −20%）。',
+      },
+      {
+        en: 'L4 — the search operator: GFlowNet\'s one exclusive lever. Off-policy validity means any behaviour policy that covers the support well enough can supply training trajectories without introducing distributional bias, so GA operators, local search, MCMC and offline expert data can all be absorbed unbiasedly into a single amortised policy. The measured ledger, all inside one codebase under one protocol: Genetic GFN 16.213; remove genetic search → 15.738; swap genetic search back for GFlowNet\'s native ε-greedy → 15.626; replace GraphGA with STONED → 15.439. Read honestly, that ledger does two things at once — it credits GraphGA with the SOTA, and it names the one job the flow objective is actually for: absorbing an external search operator without bias.',
+        zh: 'L4 —— search operator：GFlowNet 独有的杠杆。off-policy 有效性意味着任意足够覆盖 support 的行为策略都能提供训练轨迹而不引入分布偏差，于是 GA 算子、local search、MCMC 与离线专家数据都能被无偏地吸收进同一个摊销策略。实测账本全部来自同一 codebase、同一协议：Genetic GFN 16.213；去掉 genetic search → 15.738；把 genetic search 换回 GFlowNet 原生 ε-greedy → 15.626；用 STONED 代替 GraphGA → 15.439。诚实读这份账本，它同时做了两件事 —— 把 SOTA 的功劳归给 GraphGA，也点明 flow 目标真正的用处：无偏地吸收一个外部搜索算子。',
+      },
+      {
+        en: 'Concretely, per entity. Merck KGaA: promote SYNTHIA from a post-hoc scoring term to the L2 generative action space itself — that is the 0% → 62% change, it is sampler-independent, and it is the smallest engineering job in this memo; only on top of that is an L3 objective comparison worth running, and since AIDDISON is an externally sold ISO 27001 product, an L3 change must stay loss-level. Merck & Co.: fix L1 first — predictor accuracy and the MPO specification, given that 6-parameter joint MPO put nearly all the weight on P. aeruginosa potency and the two-threshold feasible region came out empty (0 of 12,796) — then run the L3 question as a bounded bake-off, reusing the MIT-licensed three-way comparison rig already sitting in the SyntheMol repository.',
+        zh: '落到两个实体的具体动作。Merck KGaA：把 SYNTHIA 从事后评分项升级为 L2 的生成动作空间本身 —— 这就是 0% → 62% 的那一步，它与 sampler 无关，是本备忘录里工程量最小的改动；只有在它之上，L3 的目标函数对照才值得跑，而且因为 AIDDISON 是对外销售的 ISO 27001 产品，L3 的改动必须停在 loss 级。Merck & Co.：先修 L1 —— predictor 精度与 MPO 规格，毕竟 6 参数联合 MPO 把几乎全部权重压到 P. aeruginosa potency 上、双阈值可行域为空（12,796 里 0 个）—— 然后把 L3 的问题当作一次有边界的 bake-off 来跑，直接复用 SyntheMol 仓库里已有的 MIT 许可三方对比装置。',
+      },
+    ],
+    tableIds: ['s3gfn-retro'],
+    datumIds: [
+      'predictorPotencyR2',
+      'predictorDockingR2',
+      'merckHitRate',
+      'boltzmol1Hits',
+      'fragmentToReaction',
+      'aizynthReactionGfn',
+      'aiddisonAssets',
+      'maxentEquivalence',
+      'deleuReduction',
+      'rtbTrustPcl',
+      'klToPrior',
+      'dockingSarsCov2',
+      'geneticGfnVsFragment',
+      'geneticGfnAblation',
+      'mpoWeightCollapse',
+    ],
+  },
+  {
     id: 'wetlab',
     budgetMarker: '0 synthesized',
     kicker: { en: 'Asymmetry', zh: '不对称' },
@@ -272,12 +329,12 @@ export const sections: Section[] = [
     budgetMarker: { en: 'Next', zh: '下一步' },
     kicker: { en: 'Recommendation', zh: '建议' },
     title: {
-      en: 'Spend the money on the oracle, and close the argument with a falsifiable pilot',
-      zh: '把钱投在 oracle 上，并用一个可证伪的 pilot 关闭争论',
+      en: 'Fix L1 first, then let an equal-budget comparison pick the L3 objective',
+      zh: '先修 L1，再用等预算对照决定 L3 用哪个目标函数',
     },
     standfirst: {
-      en: 'A three-way comparison on one internal target, under a fixed oracle budget with the same action space and reward — the acceptance line fixed in advance: GFlowNet enters the production roadmap only if it wins on both potency and #Circles at the same budget.',
-      zh: '一个内部靶点、固定 oracle 预算、同一动作空间与 reward 的三方对照 —— 验收线预先写死，只有 GFlowNet 在同预算下同时赢 potency 与 #Circles 才进生产路线图。',
+      en: 'The oracle and the MPO specification come first; the sampler-objective question is then settled by a three-way comparison on one internal target, under a fixed oracle budget with the same action space and reward — the acceptance line fixed in advance: GFlowNet enters the production roadmap only if it wins on both potency and #Circles at the same budget.',
+      zh: 'oracle 与 MPO 规格先做；sampler objective 的问题随后由一个内部靶点、固定 oracle 预算、同一动作空间与 reward 的三方对照关闭 —— 验收线预先写死：只有 GFlowNet 在同预算下同时赢 potency 与 #Circles 才进生产路线图。',
     },
     body: [
       {

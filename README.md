@@ -9,15 +9,35 @@
 
 这不是 Merck 的官方文件，也不代表任何雇主的立场。本项目与 Merck & Co., Inc.（Rahway, NJ, USA）及 Merck KGaA（Darmstadt, Germany）均无隶属关系，未获其背书或审阅。
 
-## Conclusion
+## Placement, not a verdict
 
-- **不要把 GFlowNet 当框架立项**。它是 sampler 层的一个可选目标函数，而 2026 年的杠杆不在 sampler。
-- **固定 oracle 预算下它输**：PMO 原表（23 oracle · 10k 调用 · 5 seed · sum AUC-top10）里 GFlowNet (fragment) **9.131（16/25）**、GFlowNet-AL **8.406（22/25）**，而**随机筛选 ZINC-250k 拿到 8.635（19/25）**、REINVENT 拿到 14.196（1/25）。
-- **它唯一的差异化卖点（多样性）在唯一一次公平对照中被否证**：在预算受控、且给所有方法都装上 diversity filter 的 Renz 2024 benchmark 中，GFlowNet 在 DRD2 与 JNK3 上的 diverse hits 是 **0**，随机虚拟筛选是 **21 和 15**。
-- **它真正的贡献（reaction-template 合成可达 MDP）与 flow 目标无关**，且已被更简单的 sampler 在 1/4 到 1/400 的预算下超越；Genetic GFN 的 16.213 由 GraphGA 算子 + REINVENT 架构 + KL 正则贡献，GFlowNet 只是 replay 目标。
-- **真正的瓶颈由 Merck 自己的项目数据给出**：Merck & Co. 与 Stanford 用非 GFlowNet 的 SyntheMol-RL 跑了一年，12,796 个生成分子里 **0 个**同时满足 potency 与 docking 双阈值；合成测活 111 个，**只有 4 个 IC₅₀ < 10 μM（3.1 / 6.1 / 6.3 / 7.6 μM）= 3.6%**，而同一项目历史库里已有 95 个单位数 nM 化合物。
-- 团队自己的归因是**性质预测器不准，不是生成器不行**：实验 potency predictor **R² 0.66 ± 0.03**（docking R² 0.76 ± 0.01）；6 参数 MPO 的 dynamic weighting 把几乎全部权重压到 P. aeruginosa potency 上，团队最终放弃六参数联合优化。
-- **行动**：把预算投在 oracle（性质预测器、亲和力模型、独立 retrosynthesis）与 MPO 规格上，而不是换 sampler。GFlowNet 的正确定位是一次有边界的 hit-finding bake-off（数周量级实验），只有当它在相同预算下同时赢 potency 与 #Circles 才进入生产路线图。
+GFlowNet is a layer, not a platform. The panel places it in a four-layer stack
+and attaches the measured constraint to each layer:
+
+- **L1 Oracle — the binding constraint.** Merck's own programme: potency
+  predictor R² 0.66 / docking R² 0.76, 111 compounds synthesised and assayed,
+  4 with IC50 < 10 uM (3.6%). The team attributed the failure to predictor
+  accuracy, not to the generator.
+- **L2 Action space — GFlowNet's durable contribution, and it is objective
+  agnostic.** Hold the sampler fixed and change only the MDP: fragment to
+  reaction lifts independent AiZynthFinder success from 0% to 62%. Reaction
+  templates themselves only reach <=72% under external checking.
+- **L3 Sampler objective — where GFlowNet plugs in.** GFlowNets are MaxEnt RL
+  up to a reward correction (Tiapkin, AISTATS 2024); TB = Path Consistency
+  Learning (Deleu, UAI 2024); RTB = Trust-PCL (Deleu 2025). Integration is
+  therefore two loss-layer edits, not a platform migration. The boundary of
+  this layer: vanilla GFlowNet 9.131 against REINVENT 14.196 at a fixed budget.
+- **L4 Search operator — its unique lever.** Off-policy soundness absorbs
+  GraphGA, local search, MCMC and offline expert data without bias:
+  Genetic GFN 16.213, and 15.738 once the genetic search is removed.
+
+The numbers that constrain the framework-level bet are kept, not retired:
+PMO 9.131 (16/25) and GFlowNet-AL 8.406 (22/25) against random screening
+8.635 (19/25); 0 diverse hits on DRD2 and JNK3 under #Circles with a diversity
+filter on every method, where random virtual screening gets 21 and 15; and 0
+molecules synthesised and assayed by any GFlowNet method. Their job changes
+from "a reason not to touch it" to "the constraint on which layers it can
+carry".
 
 ## Language
 

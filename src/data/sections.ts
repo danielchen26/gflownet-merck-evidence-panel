@@ -37,6 +37,10 @@ export const sections: Section[] = [
         zh: '相应地，集成路径既窄又便宜。GFlowNets 与 MaxEnt RL 是 "one and the same, up to a correction of the reward function"（Tiapkin, AISTATS 2024 Oral）；Trajectory Balance ≡ Path Consistency Learning、Modified Detailed Balance ≡ Soft Q-Learning 变体（Deleu, UAI 2024）；Relative Trajectory Balance ≡ Trust-PCL（Deleu 2025）。所以要它的性质只需 (a) 多路径 reward correction —— 仅当真用 fragment 或 reaction MDP —— 加 (b) 一个 KL 正则项。两者都是 loss 层改动，可直接进 REINVENT4 / AIDDISON 已在跑的 RL 循环，不触发商业产品的重新资格认证。',
       },
       {
+        en: 'The diagram above is the map for everything that follows, which is why it opens here rather than arriving halfway down. Each of its four layers is walked in full further on, under Integration: what the layer owns, what it costs, and which measured number fixes its ceiling. The numbers repeat there on purpose — a map labels the territory it is a map of.',
+        zh: '上面那张图是后文全部内容的地图，所以它开在这里，而不是走到一半才出现。四层每一层都会在后面的「集成」一节里走完整：这一层管什么、代价是什么、以及哪个实测数字钉住了它的上限。那里的数字是故意重复的 —— 地图要标注它所描绘的那片地。',
+      },
+      {
         en: '→ First: put the money on the oracle (property predictors, affinity models, independent retrosynthesis) and fix the MPO specification — Merck & Co.\'s own project traced a 3.6% wet-lab hit rate to predictors at R² 0.66 / 0.76, not to the sampler. Then close the L3 argument the only way it can be closed: an equal-budget comparison on one internal target, same action space and same reward, with GFlowNet entering the production roadmap only if it wins on both potency and #Circles.',
         zh: '→ 先做两件事：把钱投在 oracle（性质预测器、亲和力模型、独立 retrosynthesis）上，并修 MPO 规格 —— Merck & Co. 自己的项目把 3.6% 的湿实验命中率归因于 R² 0.66 / 0.76 的预测器，而不是 sampler。然后用唯一可行的方式关闭 L3 的争论：一个内部靶点上的等预算对照，同一动作空间、同一 reward，只有 GFlowNet 同时赢 potency 与 #Circles 才进生产路线图。',
       },

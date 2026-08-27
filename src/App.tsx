@@ -7,6 +7,8 @@ import { MultiPathDag } from './components/MultiPathDag'
 import { GapsPanel } from './components/GapsPanel'
 import { IntegrationStack } from './components/IntegrationStack'
 import { EcosystemStatus } from './components/EcosystemStatus'
+import { DecisionBrief } from './components/DecisionBrief'
+import { ResearchAgenda } from './components/ResearchAgenda'
 import { sections, openGaps } from './data/sections'
 import { tables, merckFunnel, sources } from './data/evidence'
 import { t, UI, useLang } from './i18n/i18n'
@@ -181,7 +183,20 @@ export default function App() {
           </p>
         </header>
 
-        {SECTION['verdict'] && <SectionShell section={SECTION['verdict']} />}
+        {/* The decision entry point comes before the evidence, because the
+            reader who has to sign something should not have to derive the
+            recommendation from ten sections of measurement. */}
+        <DecisionBrief />
+
+        {/* The stack is the map for the whole argument, so it opens the piece.
+            Reading it after five evidence sections meant the map arrived after
+            the journey. The integration section below keeps the loss-level
+            prose and the equivalence citations. */}
+        {SECTION['verdict'] && (
+          <SectionShell section={SECTION['verdict']}>
+            <IntegrationStack />
+          </SectionShell>
+        )}
 
         {SECTION['guarantee'] && (
           <SectionShell section={SECTION['guarantee']}>
@@ -225,11 +240,7 @@ export default function App() {
           </SectionShell>
         )}
 
-        {SECTION['integration'] && (
-          <SectionShell section={SECTION['integration']}>
-            <IntegrationStack />
-          </SectionShell>
-        )}
+        {SECTION['integration'] && <SectionShell section={SECTION['integration']} />}
 
         {SECTION['wetlab'] && (
           <SectionShell section={SECTION['wetlab']}>
@@ -245,6 +256,12 @@ export default function App() {
               caption={COPY.funnelCaption}
               source={sources['merckBlog']}
             />
+          </SectionShell>
+        )}
+
+        {SECTION['agenda'] && (
+          <SectionShell section={SECTION['agenda']}>
+            <ResearchAgenda />
           </SectionShell>
         )}
 

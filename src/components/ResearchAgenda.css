@@ -1,0 +1,334 @@
+/* ==========================================================================
+   ResearchAgenda — the constructive half of the panel.
+   Colour keeps the same epistemic contract as everywhere else:
+     --assay   measured / refuted failure that the item hangs on
+     --flow    claimed  / proposal and falsifiable experiment
+     --verdict a failure that was measured to fail outright
+   The three legs of each item share one grid recipe on purpose: a proposal
+   must not be able to out-shout the measurement it rests on.
+   ========================================================================== */
+
+.ragenda {
+  margin-top: var(--s8);
+  /* method names and identifiers (SubTB(λ), AiZynthFinder, GraphGA) must not
+     push the narrow layout sideways */
+  overflow-wrap: anywhere;
+}
+
+/* ── the reframe ────────────────────────────────────────────────────── */
+
+.ragenda__reframe {
+  margin-bottom: var(--s10);
+  padding: var(--s6);
+  border: 1px solid var(--rule-strong);
+  border-left: 3px solid var(--flow);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--flow) 8%, transparent),
+    transparent 62%
+  );
+}
+
+.ragenda__kicker {
+  display: block;
+  margin-bottom: var(--s2);
+  color: var(--flow);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+html:lang(en) .ragenda__kicker {
+  letter-spacing: 0.12em;
+}
+
+.ragenda__reframeTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2);
+  margin: 0 0 var(--s4);
+  color: var(--vellum);
+  font-size: clamp(19px, 2.6vw, 26px);
+  line-height: 1.2;
+}
+
+.ragenda__reframeBody {
+  max-width: 68ch;
+  margin: 0 0 var(--s3);
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.62;
+}
+
+.ragenda__reframeBody:last-of-type {
+  margin-bottom: var(--s4);
+}
+
+/* ── what survives ─────────────────────────────────────────────────── */
+
+.ragenda__stands {
+  margin-bottom: var(--s10);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--rule);
+}
+
+.ragenda__standsTitle {
+  margin: 0 0 var(--s2);
+  color: var(--vellum);
+  font-size: 17px;
+  letter-spacing: 0.01em;
+}
+
+.ragenda__standsLede {
+  max-width: 66ch;
+  margin: 0 0 var(--s5);
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.ragenda__standsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: var(--s4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ragenda__stand {
+  padding: var(--s4);
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--rule-strong);
+  background: var(--ink-2);
+}
+
+/* off-policy validity: the one the strongest results actually monetize */
+.ragenda__stand[data-cashed='true'] {
+  border-top-color: var(--assay);
+  background: color-mix(in srgb, var(--assay) 6%, var(--ink-2));
+}
+
+.ragenda__standHead {
+  margin: 0 0 var(--s2);
+  color: var(--vellum);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+.ragenda__stand[data-cashed='true'] .ragenda__standHead {
+  color: var(--assay);
+}
+
+.ragenda__standBody {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.58;
+}
+
+/* ── the seven items ───────────────────────────────────────────────── */
+
+.ragenda__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ragenda__item {
+  padding: var(--s6) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.ragenda__item:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+/* A and C: the two that need no new theory */
+.ragenda__item[data-priority='true'] {
+  padding-left: var(--s4);
+  border-left: 2px solid var(--flow);
+}
+
+.ragenda__itemHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2) var(--s3);
+  margin-bottom: var(--s5);
+}
+
+.ragenda__letter {
+  flex: none;
+  min-width: 1.6em;
+  color: var(--flow);
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.ragenda__item[data-priority='true'] .ragenda__letter {
+  color: var(--flow);
+}
+
+.ragenda__itemTitle {
+  flex: 1 1 14ch;
+  margin: 0;
+  color: var(--vellum);
+  font-size: clamp(17px, 2.2vw, 21px);
+  line-height: 1.22;
+}
+
+.ragenda__flag {
+  flex: none;
+  padding: 2px var(--s2);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ragenda__flag[data-kind='priority'] {
+  border-color: color-mix(in srgb, var(--flow) 55%, transparent);
+  color: var(--flow);
+}
+
+.ragenda__flag[data-kind='theory'] {
+  border-color: color-mix(in srgb, var(--assay) 55%, transparent);
+  color: var(--assay);
+}
+
+/* ── the triple: failure → proposal → probe ────────────────────────── */
+
+.ragenda__triple {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--s4);
+}
+
+.ragenda__leg {
+  padding-top: var(--s3);
+  border-top: 2px solid var(--rule-strong);
+}
+
+.ragenda__leg[data-leg='failure'] {
+  border-top-color: var(--verdict);
+}
+
+.ragenda__leg[data-leg='proposal'],
+.ragenda__leg[data-leg='probe'] {
+  border-top-color: var(--flow);
+}
+
+.ragenda__legLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-bottom: var(--s2);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html:lang(zh) .ragenda__legLabel {
+  letter-spacing: 0.06em;
+}
+
+.ragenda__leg[data-leg='failure'] .ragenda__legLabel {
+  color: var(--verdict);
+}
+
+.ragenda__leg[data-leg='proposal'] .ragenda__legLabel,
+.ragenda__leg[data-leg='probe'] .ragenda__legLabel {
+  color: var(--flow);
+}
+
+.ragenda__legBody {
+  margin: 0;
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ── boundary + citation ───────────────────────────────────────────── */
+
+.ragenda__boundary {
+  max-width: 72ch;
+  margin: var(--s4) 0 0;
+  padding-left: var(--s3);
+  border-left: 2px solid var(--rule-strong);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.ragenda__cite {
+  margin-top: var(--s3);
+}
+
+/* ── priority call ─────────────────────────────────────────────────── */
+
+.ragenda__priority {
+  margin-top: var(--s8);
+  padding: var(--s6);
+  border: 1px solid var(--rule-strong);
+  border-left: 3px solid var(--flow);
+  background: color-mix(in srgb, var(--flow) 7%, transparent);
+}
+
+.ragenda__priorityTitle {
+  margin: 0 0 var(--s3);
+  color: var(--flow);
+  font-size: clamp(18px, 2.4vw, 23px);
+  line-height: 1.2;
+}
+
+.ragenda__priorityBody {
+  max-width: 70ch;
+  margin: 0 0 var(--s4);
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.62;
+}
+
+.ragenda__priorityBoundary {
+  margin: 0;
+  padding-top: var(--s3);
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ── narrow ────────────────────────────────────────────────────────── */
+
+@media (max-width: 560px) {
+  .ragenda__reframe,
+  .ragenda__priority {
+    padding: var(--s4);
+  }
+
+  .ragenda__item[data-priority='true'] {
+    padding-left: var(--s3);
+  }
+
+  .ragenda__letter {
+    font-size: 21px;
+  }
+}

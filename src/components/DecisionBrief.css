@@ -1,0 +1,459 @@
+/* ==========================================================================
+   DecisionBrief — the decision entry point, above the first section.
+   Colour is the panel's epistemic contract, never sentiment:
+     --assay   measured / the thing being approved
+     --verdict refuted or refused
+     --flow    claimed  / a proposal about where budget goes
+   The three action cards share one grid track and one card recipe on purpose:
+   "Refuse" must not be able to read as a footnote to "Approve".
+   ========================================================================== */
+
+.dbrief {
+  margin: var(--s12) 0 var(--s16);
+  padding-top: var(--s6);
+  border-top: 1px solid var(--rule-strong);
+  /* long identifiers (recursionpharma/gflownet, IC₅₀ < 10 μM) must not push
+     the narrow layout sideways */
+  overflow-wrap: anywhere;
+}
+
+/* ── head ──────────────────────────────────────────────────────────── */
+
+.dbrief__head {
+  margin-bottom: var(--s8);
+}
+
+.dbrief__stamp {
+  display: inline-block;
+  margin-bottom: var(--s3);
+  padding: 2px var(--s2);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  color: var(--vellum-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+html:lang(en) .dbrief__stamp {
+  letter-spacing: 0.12em;
+}
+
+.dbrief__title {
+  margin: 0 0 var(--s3);
+  color: var(--vellum);
+  font-size: clamp(24px, 4vw, 38px);
+  line-height: 1.12;
+}
+
+.dbrief__standfirst {
+  margin: 0;
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── (1) the 60-second version ─────────────────────────────────────── */
+
+.dbrief__sixty {
+  margin: 0 0 var(--s8);
+  padding: var(--s6);
+  border: 1px solid var(--rule-strong);
+  border-left: 3px solid var(--assay);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--assay) 8%, transparent),
+    transparent 60%
+  );
+}
+
+.dbrief__sixtyHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s3);
+  margin: 0 0 var(--s4);
+}
+
+.dbrief__sixtyLabel {
+  color: var(--assay);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dbrief__sixtySub {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.dbrief__sixtyBody {
+  margin: 0;
+  max-width: 54ch;
+  color: var(--vellum);
+  font-family: var(--font-body);
+  font-size: clamp(17px, 2.2vw, 25px);
+  line-height: 1.5;
+}
+
+.dbrief__sixtyGrade {
+  margin: var(--s3) 0 0;
+}
+
+/* ── (2) the three action cards ────────────────────────────────────── */
+
+.dbrief__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: var(--s4);
+  margin-bottom: var(--s8);
+}
+
+.dbrief__card {
+  --accent: var(--rule-strong);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  min-width: 0;
+  padding: var(--s4);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--accent);
+  background: var(--ink-2);
+}
+
+.dbrief__card[data-accent='assay'] {
+  --accent: var(--assay);
+}
+
+.dbrief__card[data-accent='verdict'] {
+  --accent: var(--verdict);
+}
+
+.dbrief__card[data-accent='flow'] {
+  --accent: var(--flow);
+}
+
+.dbrief__cardHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.dbrief__verdict {
+  margin: 0;
+  color: var(--accent);
+  font-size: clamp(20px, 2.6vw, 26px);
+  line-height: 1.1;
+}
+
+.dbrief__cardTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.dbrief__cardWhat {
+  margin: 0;
+  color: var(--vellum);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.dbrief__points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+
+.dbrief__points > li {
+  position: relative;
+  padding-left: var(--s4);
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.dbrief__points > li::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: var(--s2);
+  height: 1px;
+  background: var(--accent);
+}
+
+/* ── (3) kill criteria ─────────────────────────────────────────────── */
+
+.dbrief__kill {
+  margin: 0 0 var(--s8);
+  padding: var(--s6) var(--s4);
+  border: 1px dashed var(--rule-strong);
+  background: color-mix(in srgb, var(--ink-3) 55%, transparent);
+}
+
+.dbrief__killHead {
+  margin-bottom: var(--s4);
+}
+
+.dbrief__killStamp {
+  display: inline-block;
+  margin-bottom: var(--s2);
+  padding: 2px var(--s2);
+  border: 1px solid var(--verdict);
+  border-radius: 2px;
+  color: var(--verdict);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+html:lang(en) .dbrief__killStamp {
+  letter-spacing: 0.1em;
+}
+
+.dbrief__killTitle {
+  margin: 0 0 var(--s2);
+  color: var(--vellum);
+  font-size: clamp(19px, 2.6vw, 26px);
+  line-height: 1.15;
+}
+
+.dbrief__killLede {
+  margin: 0;
+  max-width: var(--measure);
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* The gate itself is set in mono: it is a contract, not reading copy. */
+.dbrief__rules {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  counter-reset: dbrief-rule;
+}
+
+.dbrief__rule {
+  --accent: var(--flow);
+  min-width: 0;
+  padding: var(--s3);
+  border-left: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+
+.dbrief__rule[data-provenance='refuted'] {
+  --accent: var(--verdict);
+}
+
+.dbrief__rule[data-provenance='measured'] {
+  --accent: var(--assay);
+}
+
+.dbrief__ruleHead {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-bottom: var(--s2);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html:lang(zh) .dbrief__ruleHead {
+  text-transform: none;
+}
+
+.dbrief__ruleHead::before {
+  counter-increment: dbrief-rule;
+  content: counter(dbrief-rule, decimal-leading-zero);
+  color: var(--muted);
+}
+
+.dbrief__ruleBody {
+  display: block;
+  color: var(--vellum);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.dbrief__killBoundary {
+  margin: var(--s4) 0 0;
+  max-width: var(--measure);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ── (4) reversibility + three questions ───────────────────────────── */
+
+.dbrief__pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--s4);
+  margin-bottom: var(--s8);
+}
+
+.dbrief__panel {
+  min-width: 0;
+  padding: var(--s4);
+  border: 1px solid var(--rule);
+  background: var(--ink-2);
+}
+
+.dbrief__panelTitle {
+  margin: 0 0 var(--s4);
+  color: var(--vellum);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html:lang(zh) .dbrief__panelTitle {
+  text-transform: none;
+}
+
+.dbrief__rev {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+
+.dbrief__revItem {
+  --accent: var(--flow);
+  padding-left: var(--s3);
+  border-left: 2px solid var(--accent);
+}
+
+.dbrief__revItem[data-provenance='refuted'] {
+  --accent: var(--verdict);
+}
+
+.dbrief__revHead {
+  margin: 0 0 var(--s1);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.dbrief__revBody {
+  margin: 0;
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.dbrief__asks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  counter-reset: dbrief-ask;
+}
+
+.dbrief__ask {
+  position: relative;
+  padding-left: var(--s8);
+  color: var(--vellum);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.dbrief__ask::before {
+  counter-increment: dbrief-ask;
+  content: '(' counter(dbrief-ask, lower-alpha) ')';
+  position: absolute;
+  top: 0.1em;
+  left: 0;
+  color: var(--flow);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* ── shared citation slot ──────────────────────────────────────────── */
+
+.dbrief__cite {
+  margin-top: var(--s3);
+}
+
+/* ── mandatory limitation notice ───────────────────────────────────── */
+
+.dbrief__limits {
+  padding: var(--s3) 0 var(--s3) var(--s4);
+  border-left: 2px solid var(--rule-strong);
+}
+
+.dbrief__limitsHead {
+  margin: 0 0 var(--s2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html:lang(zh) .dbrief__limitsHead {
+  text-transform: none;
+}
+
+.dbrief__limitsBody {
+  margin: 0;
+  max-width: var(--measure);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.65;
+}
+
+/* ── narrow ────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .dbrief__sixty {
+    padding: var(--s4);
+  }
+
+  .dbrief__kill {
+    padding: var(--s4) var(--s3);
+  }
+
+  .dbrief__ask {
+    padding-left: var(--s6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dbrief * {
+    transition: none;
+    animation: none;
+  }
+}

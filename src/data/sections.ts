@@ -73,6 +73,10 @@ export const sections: Section[] = [
         en: 'The engineering consequence strengthens the recommendation rather than weakening it: since GFlowNet ≡ KL-regularised RL + reward correction, getting its properties needs no new framework, only (a) the multi-path reward correction (only if a fragment/reaction MDP is genuinely used) plus (b) one KL regularisation term — both are loss-layer changes that drop straight into the existing RL loops of REINVENT4 / AIDDISON without triggering requalification of a commercial product. Pharma has independently arrived here already: KL-to-prior measurably beats REINVENT\'s reward-shaping (validity +18% / exploration +12%, where reward-shaping gives validity +12% / diversity −20%).',
         zh: '工程后果反而是加强建议而非削弱：既然 GFlowNet ≡ KL 正则 RL + reward correction，想要它的性质不需要新框架，只需要 (a) 多路径 reward correction（仅当真用 fragment/reaction MDP）+ (b) 一个 KL 正则项 —— 两者都是 loss 层改动，可直接进 REINVENT4 / AIDDISON 的现有 RL 循环，不触发商业产品的重新资格认证。pharma 侧已独立走到这里：KL-to-prior 实测优于 REINVENT 的 reward-shaping（validity +18% / exploration +12%，而 reward-shaping 是 validity +12% / diversity −20%）。',
       },
+      {
+        en: 'One more thing about the comparison group, because it explains a confusion that has never gone away. This objective has been judged for years against argmax-seeking RL, but what it optimises is distribution matching, so its real comparison group is MCMC and amortised posterior inference — GFlowNet Foundations (JMLR 24(210)) positions itself in exactly those terms: amortise MCMC into a single training run. This changes none of the fixed-budget conclusions above — under a fixed oracle budget the flow objective still loses — but it does explain why the question "is it actually promising" has never had a clean answer: the thing being scored was a sampler, and the scoreboard it was being scored on belonged to an optimiser.',
+        zh: '关于对照组还有一件事，它解释了一个始终没散去的混淆。这个目标函数多年来一直被拿去和追 argmax 的 RL 比，但它优化的是分布匹配，所以它真正的对照组是 MCMC 与摊销后验推断 —— GFlowNet Foundations（JMLR 24(210)）给自己的定位正是这句话：用单次训练把 MCMC 摊销掉。这不改变上面任何一条固定预算下的结论 —— 固定 oracle 预算下 flow 目标依然输 —— 但它解释了为什么"它到底 promising 吗"这个问题一直得不到干净的答案：被打分的是一个 sampler，而打分用的记分板属于一个 optimiser。',
+      },
     ],
     datumIds: ['maxentEquivalence', 'deleuReduction', 'rtbTrustPcl', 'klToPrior', 'bengio2021Proxy'],
   },
@@ -325,6 +329,49 @@ export const sections: Section[] = [
     ],
   },
   {
+    id: 'agenda',
+    budgetMarker: { en: 'how to fix it', zh: '怎么修' },
+    kicker: { en: 'Agenda', zh: '议程' },
+    title: {
+      en: 'What it would take to make it good',
+      zh: '要把它做好，需要什么',
+    },
+    standfirst: {
+      en: 'Seven items, each one nailed to a documented failure mode and to an experiment that could falsify it: (A) change the ruler — re-score the published results with #Circles instead of IntDiv; (B) state β* as a decision problem instead of a sweep; (C) make every environment prove its pointed DAG is legal before training starts; (D) fix credit assignment over long trajectories instead of extending the patch chain; (E) make exploration native instead of renting a GA; (F) publish the active-count threshold below which sparse reward breaks it; (G) move the theoretical advantage onto the representation that actually wins, and cash the measurable quantities — Z, entropy, mutual information — that nobody uses. A and C need no new theory, nobody has done them, and either one would change what the field believes about itself within weeks.',
+      zh: '七条议程，每条都钉在一个已记录的失效模式上，并配一个能证伪它的实验：(A) 换对尺子 —— 用 #Circles 而不是 IntDiv 重打已发表结果的分；(B) 把 β* 表述成一个决策问题，而不是一次扫参；(C) 让每个环境在训练开始前先证明自己的 pointed DAG 合法；(D) 真修长轨迹的信用分配，而不是把补丁链再接一节；(E) 让探索变成原生的，而不是租一个 GA；(F) 公布稀疏 reward 把它压垮的 active 数阈值；(G) 把理论优势搬到真正赢的那个表示上，并把没人用的可测量量 —— Z、熵、互信息 —— 兑现出来。其中 A 与 C 不需要任何新理论、至今没人做，而任何一条都能在数周内改变这个领域对自己的认知。',
+    },
+    body: [
+      {
+        en: 'The frame has to be reset before anything on the list makes sense. What a GFlowNet optimises is p(x) ∝ R(x), so its natural comparison group is MCMC and amortised posterior inference — not argmax-seeking RL. It has been judged on the wrong track. On the argmax track the verdict on this page stands and does not move: fragment GFlowNet 9.131 against REINVENT 14.196 in the original PMO table, and 0 diverse hits on DRD2 and JNK3 against 21 and 15 for random virtual screening. On the sampling track the question is a different question — after training, a single forward pass draws a sample from a distribution proportional to the reward, with no chain, no burn-in and no autocorrelation to argue about — and GFlowNet Foundations (JMLR 24(210), arXiv 2111.09266) states that position itself: amortise MCMC with one training run. Putting it on the right track repairs not one number above. What it repairs is the question.',
+        zh: '在这张清单能讲得通之前，得先把赛道重述一遍。GFlowNet 优化的是 p(x) ∝ R(x)，所以它天然的对照组是 MCMC 与摊销后验推断 —— 不是追 argmax 的 RL。它一直被放在错误的赛道上评判。在 argmax 赛道上，这一页的判决成立且不动摇：PMO 原表里 fragment GFlowNet 9.131 对 REINVENT 14.196；DRD2 与 JNK3 上 diverse hits 是 0，而随机虚拟筛选是 21 和 15。在采样赛道上，问的是另一个问题 —— 训练完成后，单次前向就从一个与 reward 成正比的分布里取出一个样本，没有链、没有 burn-in、也没有 autocorrelation 可争 —— 而 GFlowNet Foundations（JMLR 24(210)，arXiv 2111.09266）自己的定位就是这句话：用一次训练把 MCMC 摊销掉。放对赛道修不好上面任何一个数字，它修的是问题本身。',
+      },
+      {
+        en: 'Four things hold, and they are the whole asset. One: the distributional guarantee on the DAG is a correctness statement, not a preference — naive tree-shaped or autoregressive value methods give π(x) ∝ n(x)·R(x), where n(x) counts the action sequences that build the same graph, a bias that grows exponentially with trajectory length and systematically favours large molecules (Bengio 2021, Prop. 1c/2, arXiv 2106.04399). Two: off-policy validity (Prop. 3) — any behaviour policy that covers the support well enough trains it without distributional bias. Three: log Z comes out free and measurable — SynFlowNet sets R ≡ 1, trains, and reads log Z to measure the size of its own state space. Four: entropy, mutual information and Pareto sampling are all capabilities written down in GFlowNet Foundations, and almost nobody in the molecular literature uses them. Note what the second item implies about the first: the three strongest results in the literature all cash that one property and nothing else — Genetic GFN (16.213) eats a GA, S3-GFN eats a contrastive buffer plus genetic exploration, A-GFN eats semi-offline batches. The field\'s best numbers are evidence for amortisation, not for the flow objective as an optimiser.',
+        zh: '真正站得住的有四条，而它们就是全部资产。一：DAG 上的分布性保证是一条正确性陈述，不是偏好 —— 朴素树形或自回归 value 方法给出 π(x) ∝ n(x)·R(x)，其中 n(x) 数的是构造同一张图的动作序列数，该偏差随轨迹长度指数增长并系统性偏好大分子（Bengio 2021, Prop. 1c/2，arXiv 2106.04399）。二：off-policy 有效性（Prop. 3）—— 任意足够覆盖 support 的行为策略都能无偏地训练它。三：log Z 免费且可测 —— SynFlowNet 令 R ≡ 1 训练，再读出 log Z 来测自己状态空间的大小。四：熵、互信息与 Pareto 采样都是 GFlowNet Foundations 里写明的能力，而分子圈几乎没人用。注意第二条对第一条意味着什么：文献里最强的三个结果变现的都是这一条、而且只有这一条 —— Genetic GFN（16.213）吃 GA，S3-GFN 吃对比 buffer 加 genetic exploration，A-GFN 吃半离线批。这个领域最好的数字是摊销这条性质的证据，不是 flow 目标作为 optimiser 的证据。',
+      },
+      {
+        en: 'Six failure modes, every one of them measured, each one attached to an item on the list. The temperature problem is unsolved: β from 1 to 50 moves PMO AUC 11.083 → 16.213 while Tanimoto diversity falls 0.812 → 0.432, and no theory says which β to pick (Mol GA sits at 15.686 / 0.465, REINVENT at 15.185 / 0.468). Credit assignment over long trajectories is a patch chain, FM → DB → TB → SubTB(λ): the TB paper (arXiv 2201.13259) says of FM and DB that they are "prone to inefficient credit propagation across long action sequences", and SubTB (arXiv 2209.12782) places itself between the two ends of a bias-variance trade-off. Pointed-DAG legality is a correctness bug and not a tuning knob: under a uniform P_B only 11.0 ± 3.7% of backward trajectories reach s₀, and the free P_B trained by TB reaches 1.0 ± 0.8% on held-out data, against 99.3 ± 0.5% for MaxLikelihood and 100.0 ± 0.0% for REINFORCE on the training set (SynFlowNet, ICLR 2025, arXiv 2405.01155). Native exploration is weak: 16.213 with genetic search, 15.626 once genetic search is swapped back for GFlowNet\'s own ε-greedy, 15.738 with genetic search removed, 15.439 with STONED in place of GraphGA. Sparse reward breaks it outright: on RGFN\'s senolytic task, whose proxy training set holds fewer than 100 actives, the fragment GFlowNet found no high-reward molecule at all. And the theoretical advantage and the empirical performance sit on different representations: multi-path fragment and reaction MDPs are the ones that need the DAG correction and they score 9.918, while the single-path SMILES representation has an empty correction term — TB degenerates into PCL — and scores 16.213, in the same original PMO table whose REINVENT row reads 14.196 (1/25).',
+        zh: '六条失效模式，每一条都是实测，每一条都挂在清单上的一项。温度问题未解：β 从 1 到 50，PMO AUC 11.083 → 16.213，而 Tanimoto diversity 从 0.812 掉到 0.432，且没有任何理论指明该选哪个 β（Mol GA 在 15.686 / 0.465，REINVENT 在 15.185 / 0.468）。长轨迹的信用分配是一条补丁链，FM → DB → TB → SubTB(λ)：TB 论文（arXiv 2201.13259）自陈 FM 与 DB "prone to inefficient credit propagation across long action sequences"，而 SubTB（arXiv 2209.12782）把自己放在 bias-variance 权衡两端之间。pointed-DAG 合法性是正确性 bug，不是调参旋钮：均匀 P_B 下只有 11.0 ± 3.7% 的反向轨迹能回到 s₀，TB 训练出的 free P_B 在 held-out 上是 1.0 ± 0.8%，而训练集上 MaxLikelihood 是 99.3 ± 0.5%、REINFORCE 是 100.0 ± 0.0%（SynFlowNet, ICLR 2025, arXiv 2405.01155）。原生探索弱：带 genetic search 是 16.213，把 genetic search 换回 GFlowNet 自己的 ε-greedy 是 15.626，去掉 genetic search 是 15.738，用 STONED 代替 GraphGA 是 15.439。稀疏 reward 直接让它失效：RGFN 的 senolytic 任务（proxy 训练集里 active 少于 100 个）上，fragment GFlowNet 没找到任何高 reward 分子。而理论优势与经验表现落在不同的表示上：需要 DAG 修正的正是多路径的 fragment 与 reaction MDP，它们拿 9.918；单路径 SMILES 表示的修正项为空 —— TB 退化成 PCL —— 却拿 16.213，而同一张 PMO 原表里 REINVENT 那一行是 14.196（1/25）。',
+      },
+      {
+        en: 'The honest conclusion is narrower than the field\'s own advertising. What is promising here is not "it generates better molecules". It is amortised posterior sampling — train once, then sample in one forward pass from the distribution you specified rather than from the mode you happened to reach; it is an unbiased substrate for distilling off-policy search, whatever produced the trajectories; and it is a set of quantities you can actually measure — Z, entropy, mutual information — in a field that currently reports one AUC. All seven items are proposals, not results: none has been implemented here, and item B has no precedent in the firsthand literature we retrieved. Two of them need no new theory whatsoever: score the existing checkpoints with #Circles instead of IntDiv, and make every environment prove its pointed DAG is legal before training starts. Nobody has done either, and either one would change what the field believes about itself within weeks.',
+        zh: '诚实的结论比这个领域自己的宣传窄。promising 的不是"它能生成更好的分子"。promising 的是摊销后验采样 —— 训练一次，然后单次前向就从你指定的那个分布里采样，而不是从你恰好走到的那个 mode 里采样；是一个无偏的 off-policy 搜索蒸馏基底，不管轨迹是谁产生的；以及一组你真的能测出来的量 —— Z、熵、互信息 —— 在一个当下只报一个 AUC 的领域里。七条全部是提议，不是结果：一条都没有在此实施，而其中 B 在我们检索到的一手文献中没有先例。有两条完全不需要新理论：用 #Circles 而不是 IntDiv 给已有 checkpoint 打分；以及让每个环境在训练开始前先证明自己的 pointed DAG 合法。这两条至今没人做，而任何一条都能在数周内改变这个领域对自己的认知。',
+      },
+    ],
+    datumIds: [
+      'pmoGfnVsRandom',
+      'gfnDrd2Jnk3',
+      'intDivAxioms',
+      'bengio2021Proxy',
+      'geneticGfnAblation',
+      'geneticGfnVsFragment',
+      'synflownetBackward',
+      'maxentEquivalence',
+      'deleuReduction',
+      'rtbTrustPcl',
+    ],
+  },
+  {
     id: 'pilot',
     budgetMarker: { en: 'Next', zh: '下一步' },
     kicker: { en: 'Recommendation', zh: '建议' },
@@ -460,5 +507,9 @@ export const openGaps: LText[] = [
   {
     en: 'The Julia registry probe is a point-in-time snapshot taken on 2026-08-27 (three package paths: GFlowNet, GFlowNets, GenerativeFlowNetworks). The same holds for every repository commit count, star count, fork count and open-issue count on this page: they are that day\'s values, not standing facts.',
     zh: 'Julia registry 探测是 2026-08-27 的时点快照（三个包路径：GFlowNet、GFlowNets、GenerativeFlowNetworks）。本页所有仓库的 commit 计数、★数、fork 数与 open issue 数同理：它们是那一天的值，不是恒定事实。',
+  },
+  {
+    en: 'The seven agenda items are proposals, not implemented results: not one of them has been run here, and none has been costed or scheduled. Item B — stating the choice of β* as a decision problem tied to the downstream selection budget — has no precedent in the firsthand literature we retrieved, so it is an open question rather than a known result. No item on that list may be cited as evidence for anything.',
+    zh: '议程中的七条均为提议，不是已实施的结果：一条都没有在此跑过，也没有为它们估算工作量或排期。其中 B —— 把 β* 的选择表述成与下游筛选预算绑定的决策问题 —— 在我们检索到的一手文献中没有先例，因此它属于开放问题而非已知结果。该清单上的任何一条都不得被当作任何结论的证据。',
   },
 ];

@@ -125,6 +125,12 @@ Boundary: repository metadata, README text and registry probes only. Nothing
 was cloned, no test was run, no benchmark was reproduced. The panel therefore
 makes no pass-rate or performance claim about any repository.
 
+The three gaps listed for `danielchen26/Gflownet` — registry absence, the
+`PythonCall` dependency class, and the naming mismatch — are packaging rather
+than capability, they describe a repository under active development, and each
+can be closed by a single commit. They are anchored to the 2026-08-27 probe
+everywhere they appear. Re-probe before citing any of them.
+
 ## Language
 
 The panel ships in English and Chinese. English is the default; the switcher

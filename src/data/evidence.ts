@@ -521,7 +521,7 @@ export const tables: EvidenceTable[] = [
         cells: [
           'MIT',
           { en: 'created 2025-05-17 · last push 2026-08-27 · 152 .jl files · Project.toml v1.0.0 · Zenodo 10.5281/zenodo.22117533', zh: 'created 2025-05-17 · last push 2026-08-27 · 152 个 .jl 文件 · Project.toml v1.0.0 · Zenodo 10.5281/zenodo.22117533' },
-          { en: 'not registered in the General registry, so Pkg.add("GFlowNet") fails today; PythonCall 0.9.31 sits in [deps] rather than as a weak dependency, so every user drags in a Python environment; the name differs in three places (repo Gflownet / package GFlowNet / README title GFlowNet.jl)', zh: '未注册到 General registry，Pkg.add("GFlowNet") 目前失败；PythonCall 0.9.31 在 [deps] 而非 weakdep，每个用户被迫拖一个 Python 环境；命名三处不一致（repo Gflownet / 包名 GFlowNet / README 标题 GFlowNet.jl）' },
+          { en: 'at the 2026-08-27 probe, and all three are packaging rather than capability: not registered in the General registry, so Pkg.add("GFlowNet") failed; PythonCall 0.9.31 sits in [deps] rather than as a weak dependency, so every user drags in a Python environment; the name differs in three places (repo Gflownet / package GFlowNet / README title GFlowNet.jl). The repository is under active development — re-probe before citing.', zh: '截至 2026-08-27 探测，且三条都是打包问题而非能力问题：未注册到 General registry，Pkg.add("GFlowNet") 失败；PythonCall 0.9.31 在 [deps] 而非 weakdep，每个用户被迫拖一个 Python 环境；命名三处不一致（repo Gflownet / 包名 GFlowNet / README 标题 GFlowNet.jl）。该仓库正在活跃开发中 —— 引用前请重新探测。' },
         ],
         provenance: 'measured',
       },

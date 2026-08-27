@@ -389,12 +389,25 @@ const HAS_CAVEAT: LText = {
   zh: '存在于文件树里，仅此而已：我核对的是存在，不是行为。',
 };
 
-const LACKS_HEAD: LText = { en: 'What it still lacks', zh: '它还缺的' };
+/* These three are the most volatile claims in the section: they describe
+ * packaging decisions in a repository under active development, not fixed
+ * properties of it. Any of them can be closed by a single commit, so the head
+ * carries the snapshot date and says so, rather than asserting a permanent
+ * deficiency about a moving target. */
+const LACKS_HEAD: LText = {
+  en: 'What it lacked at the 2026-08-27 snapshot',
+  zh: '在 2026-08-27 快照时它还缺的',
+};
+
+const LACKS_CAVEAT: LText = {
+  en: 'Packaging, not capability — and the repository is under active development, so each of these three can be closed by one commit. Re-probe before citing any of them.',
+  zh: '这三条是打包问题，不是能力问题 —— 而该仓库正在活跃开发中，每一条都可能被一个 commit 关掉。引用前请重新探测。',
+};
 
 const LACKS_POINTS: readonly LText[] = [
   {
-    en: 'Not registered in the Julia General registry, so Pkg.add("GFlowNet") fails today. Installation means cloning a URL.',
-    zh: '未注册到 Julia General registry，所以 Pkg.add("GFlowNet") 目前会失败。安装意味着 clone 一个 URL。',
+    en: 'Not registered in the Julia General registry, so Pkg.add("GFlowNet") failed at the probe. Installation means cloning a URL.',
+    zh: '未注册到 Julia General registry，所以探测时 Pkg.add("GFlowNet") 会失败。安装意味着 clone 一个 URL。',
   },
   {
     en: 'PythonCall sits in [deps] rather than in a weakdep or extension, so every user is forced to drag along a Python environment for the RDKit bridge.',
@@ -711,6 +724,7 @@ export function EcosystemStatus({ className }: { className?: string }) {
               <h4 className="ecostat__cardTitle">{t(LACKS_HEAD, lang)}</h4>
             </header>
             <Points items={LACKS_POINTS} />
+            <p className="ecostat__cardNote">{t(LACKS_CAVEAT, lang)}</p>
           </article>
 
           <article className="ecostat__card" data-accent="flow">

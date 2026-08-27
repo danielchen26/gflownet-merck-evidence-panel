@@ -1,0 +1,726 @@
+/* ==========================================================================
+   EcosystemStatus — the infrastructure blank, and one attempt at filling it.
+   Colour is the panel's epistemic contract, never sentiment or decoration:
+     --assay   measured        repo metadata, file sizes, registry probes
+     --verdict measured zero   an absence that was probed for and found empty
+     --flow    claimed         a causal reading or a design claim
+   The three case-study blocks share one grid and one card recipe on purpose:
+   "what it lacks" must not be able to shrink below "what it has".
+   ========================================================================== */
+
+.ecostat {
+  margin: var(--s12) 0;
+}
+
+.ecostat__part {
+  margin: 0 0 var(--s16);
+}
+
+/* ── part heads ────────────────────────────────────────────────────── */
+
+.ecostat__head {
+  margin-bottom: var(--s6);
+}
+
+.ecostat__kicker {
+  display: block;
+  margin-bottom: var(--s3);
+}
+
+.ecostat__title {
+  margin: 0;
+  color: var(--vellum);
+  font-size: clamp(1.25rem, 3.4vw, 1.75rem);
+  text-wrap: balance;
+}
+
+.ecostat__titleLink {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.ecostat__titleLink:hover {
+  border-bottom-color: var(--flow);
+  color: var(--flow);
+}
+
+.ecostat__lede {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  margin: var(--s3) 0 0;
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.ecostat__lede > .pdot {
+  margin-top: 0.5em;
+}
+
+/* ── (1) the probe table ───────────────────────────────────────────── */
+
+.ecostat__scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--ink-2);
+  /* Room for the first row's ProvenanceDot tooltip, which opens upwards. */
+  padding-top: var(--s6);
+}
+
+.ecostat__table {
+  /* Four columns, two of them prose: below this the cells thrash, so the
+     shell scrolls instead of the page overflowing. */
+  min-width: 660px;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.ecostat__th {
+  position: sticky;
+  top: 0;
+  padding: var(--s2) var(--s4) var(--s3);
+  border-bottom: 1px solid var(--rule);
+  background: var(--ink-2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ecostat__row {
+  --accent: var(--assay);
+  transition: background-color 120ms ease;
+}
+
+.ecostat__row[data-provenance='claimed'] {
+  --accent: var(--flow);
+}
+
+.ecostat__row[data-provenance='refuted'] {
+  --accent: var(--verdict);
+}
+
+/* A measured zero: the row *is* the blank the section is about. */
+.ecostat__row[data-zero='true'] {
+  --accent: var(--verdict);
+  background: color-mix(in srgb, var(--verdict) 8%, transparent);
+}
+
+.ecostat__row:hover {
+  background: color-mix(in srgb, var(--vellum) 5%, transparent);
+}
+
+.ecostat__row[data-zero='true']:hover {
+  background: color-mix(in srgb, var(--verdict) 13%, transparent);
+}
+
+.ecostat__repo,
+.ecostat__td {
+  padding: var(--s3) var(--s4);
+  border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.ecostat__repo {
+  border-left: 2px solid transparent;
+  color: var(--vellum);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.ecostat__row[data-zero='true'] .ecostat__repo {
+  border-left-color: var(--verdict);
+}
+
+.ecostat__repoInner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.ecostat__repoLink {
+  color: var(--vellum);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.ecostat__repoLink:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.ecostat__zeroTag {
+  display: block;
+  margin-top: var(--s2);
+  color: var(--verdict);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ecostat__td {
+  color: color-mix(in srgb, var(--vellum) 84%, var(--muted));
+  line-height: 1.55;
+}
+
+.ecostat__td--license {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.ecostat__td--activity {
+  min-width: 20ch;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6;
+}
+
+.ecostat__td--lacks {
+  min-width: 26ch;
+  color: var(--vellum);
+}
+
+.ecostat__row[data-zero='true'] .ecostat__td--lacks {
+  color: var(--verdict);
+}
+
+.ecostat__foot {
+  margin: var(--s3) 0 0;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+/* ── shared card recipe: (2) both sides, (3) all three blocks, (4) ─── */
+
+.ecostat__pair,
+.ecostat__trio {
+  display: grid;
+  gap: var(--s4);
+}
+
+.ecostat__pair {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+}
+
+.ecostat__trio {
+  margin-top: var(--s6);
+  /* Equal fractions: the gaps block can never be narrower than the wins. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  align-items: stretch;
+}
+
+.ecostat__card {
+  --accent: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  min-width: 0;
+  padding: var(--s4);
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--accent);
+  border-radius: 3px;
+  background: var(--ink-2);
+}
+
+.ecostat__card[data-accent='flow'] {
+  --accent: var(--flow);
+}
+
+.ecostat__card[data-accent='assay'] {
+  --accent: var(--assay);
+}
+
+.ecostat__card[data-accent='verdict'] {
+  --accent: var(--verdict);
+}
+
+.ecostat__cardHead {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--rule);
+}
+
+.ecostat__cardTitle {
+  margin: 0;
+  flex: 1 1 12ch;
+  min-width: 0;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 108, 'wght' 650;
+  font-size: 14px;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  overflow-wrap: anywhere;
+}
+
+.ecostat__cardTag {
+  flex: 0 0 auto;
+  padding: 2px var(--s2);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ecostat__cardLede {
+  margin: 0;
+  color: var(--vellum);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.ecostat__points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.ecostat__points > li {
+  position: relative;
+  padding-left: var(--s4);
+  color: color-mix(in srgb, var(--vellum) 88%, var(--muted));
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.ecostat__points > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: var(--s2);
+  height: 1px;
+  background: var(--accent);
+}
+
+.ecostat__cardNote {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.ecostat__cardNote > .pdot {
+  margin-top: 0.55em;
+}
+
+.ecostat__cardNote--claim {
+  color: color-mix(in srgb, var(--flow) 62%, var(--vellum));
+}
+
+/* ── chips: verbatim names and figures ─────────────────────────────── */
+
+.ecostat__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ecostat__chip {
+  padding: 2px var(--s2);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--rule));
+  border-radius: 2px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+
+/* ── (3) repository metadata strip ─────────────────────────────────── */
+
+.ecostat__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ecostat__metaItem {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  min-width: 0;
+  padding: 2px var(--s2);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: var(--ink-2);
+}
+
+.ecostat__metaValue {
+  color: color-mix(in srgb, var(--vellum) 90%, var(--muted));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+
+.ecostat__metaNote {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* ── (3) file inventory, collapsed by default ──────────────────────── */
+
+.ecostat__inv {
+  margin-top: var(--s4);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ink-2) 70%, transparent);
+}
+
+.ecostat__invSummary {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s3) var(--s4);
+  color: var(--assay);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ecostat__invBody {
+  display: grid;
+  gap: var(--s4);
+  padding: 0 var(--s4) var(--s4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+}
+
+.ecostat__invGroup {
+  min-width: 0;
+}
+
+.ecostat__invDir {
+  margin: 0 0 var(--s2);
+  padding-bottom: var(--s1);
+  border-bottom: 1px solid var(--rule);
+  color: var(--vellum-dim);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+
+.ecostat__invList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+
+.ecostat__invFile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s1) var(--s2);
+  min-width: 0;
+}
+
+.ecostat__invName {
+  color: color-mix(in srgb, var(--vellum) 82%, var(--muted));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.ecostat__invBytes {
+  color: var(--assay);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ecostat__invNote {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+
+.ecostat__invGroupNote {
+  margin: var(--s2) 0 0;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+/* ── (3) the seven generic functions ───────────────────────────────── */
+
+.ecostat__ifaceList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: iface;
+}
+
+.ecostat__ifaceName {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  padding: var(--s1) var(--s2);
+  border-left: 2px solid color-mix(in srgb, var(--flow) 45%, transparent);
+  background: color-mix(in srgb, var(--flow) 7%, transparent);
+  color: var(--vellum);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+
+.ecostat__ifaceName::before {
+  counter-increment: iface;
+  content: counter(iface);
+  flex: 0 0 auto;
+  color: var(--flow);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The seventh member of the interface is not a function but the file the
+   contract lives in, so it is not numbered with the six. */
+.ecostat__ifaceContract {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s1) var(--s2);
+  margin: 0;
+}
+
+.ecostat__ifaceContractLabel {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+}
+
+.ecostat__ifaceContractFile {
+  color: var(--flow);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+
+/* ── (4) the proposal ──────────────────────────────────────────────── */
+
+.ecostat__card--wide {
+  gap: var(--s4);
+}
+
+.ecostat__driver {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  margin: 0;
+  padding: var(--s3);
+  border-left: 2px solid var(--assay);
+  background: color-mix(in srgb, var(--assay) 8%, transparent);
+  color: var(--vellum);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.ecostat__driver > .pdot {
+  margin-top: 0.5em;
+}
+
+.ecostat__codeFig {
+  margin: 0;
+}
+
+.ecostat__codeHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2) var(--s4);
+  margin-bottom: var(--s2);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+}
+
+.ecostat__codeStamp {
+  padding: 2px var(--s2);
+  border: 1px dashed color-mix(in srgb, var(--flow) 55%, transparent);
+  border-radius: 2px;
+  color: var(--flow);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ecostat__code {
+  margin: 0;
+  padding: var(--s3);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--flow);
+  border-radius: 2px;
+  background: var(--ink-3);
+  color: color-mix(in srgb, var(--vellum) 88%, var(--muted));
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.7;
+  tab-size: 2;
+}
+
+/* ── boundary: the scope of every figure above ─────────────────────── */
+
+.ecostat__boundary {
+  margin-top: var(--s8);
+  padding: var(--s4) 0 var(--s4) var(--s4);
+  border-left: 2px solid var(--rule-strong);
+}
+
+.ecostat__boundaryStamp {
+  display: inline-block;
+  margin-bottom: var(--s2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+html:lang(en) .ecostat__boundaryStamp {
+  letter-spacing: 0.12em;
+}
+
+.ecostat__boundaryBody,
+.ecostat__boundaryList > li {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.65;
+}
+
+.ecostat__boundaryBody {
+  margin: 0;
+  max-width: var(--measure);
+}
+
+.ecostat__boundaryHead {
+  margin: var(--s3) 0 var(--s2);
+  color: var(--vellum-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ecostat__boundaryList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  max-width: var(--measure);
+}
+
+.ecostat__boundaryList > li {
+  position: relative;
+  padding-left: var(--s4);
+  overflow-wrap: anywhere;
+}
+
+.ecostat__boundaryList > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: var(--s2);
+  height: 1px;
+  background: var(--rule-strong);
+}
+
+/* ── narrow ────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .ecostat__part {
+    margin-bottom: var(--s12);
+  }
+
+  .ecostat__table {
+    font-size: 13px;
+  }
+
+  .ecostat__repo,
+  .ecostat__td {
+    padding: var(--s2) var(--s3);
+  }
+
+  .ecostat__card {
+    padding: var(--s3);
+  }
+
+  .ecostat__boundary {
+    padding-left: var(--s3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecostat__row {
+    transition: none;
+  }
+}

@@ -41,8 +41,12 @@
   border-left: 1px solid var(--rule);
 }
 
+/* Hover/active fills stay on the ink ramp. A translucent --vellum or --assay
+   wash over the blue-black ground composites to a warm grey (8% --assay on
+   --ink lands at rgb(35,32,29)), which reads as a light-theme plate pasted
+   into a dark UI. The accent is carried by the edge and the marker instead. */
 .rail__langBtn:hover {
-  background: color-mix(in srgb, var(--vellum) 6%, transparent);
+  background: var(--ink-2);
   color: var(--vellum);
 }
 
@@ -52,7 +56,7 @@
 }
 
 .rail__langBtn[data-active='true'] {
-  background: color-mix(in srgb, var(--assay) 16%, transparent);
+  background: var(--ink-3);
   color: var(--assay);
 }
 
@@ -117,7 +121,7 @@ html:lang(en) .rail__legendTitle {
 }
 
 .rail__link:hover {
-  background: color-mix(in srgb, var(--vellum) 5%, transparent);
+  background: var(--ink-2);
   color: var(--vellum);
 }
 
@@ -128,7 +132,7 @@ html:lang(en) .rail__legendTitle {
 
 .rail__link[data-active='true'] {
   border-left-color: var(--assay);
-  background: color-mix(in srgb, var(--assay) 8%, transparent);
+  background: var(--ink-3);
   color: var(--vellum);
 }
 

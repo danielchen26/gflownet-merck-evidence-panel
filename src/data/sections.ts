@@ -373,6 +373,47 @@ export const sections: Section[] = [
       'fragmentToReaction',
     ],
   },
+  {
+    id: 'infrastructure',
+    budgetMarker: { en: '2 commits', zh: '2 commits' },
+    kicker: { en: 'Infrastructure', zh: '基础设施' },
+    title: {
+      en: 'The shared infrastructure never accumulated',
+      zh: '共享基础设施从未积累起来',
+    },
+    standfirst: {
+      en: 'The papers are prolific; the shared toolchain is not. The reference implementation took 2 commits in all of 2026 and its trunk still ships no real task, while the Julia ecosystem does not contain a single GFlowNet package. That contrast is the most material evidence there is for "a layer, not a platform".',
+      zh: '论文很活跃，共享工具链没有。参考实现 2026 全年只有 2 个 commit、主干至今没有一个真实任务，而 Julia 生态里连一个 GFlowNet 包都没有。这个反差本身就是"它是一层而不是平台"最物质化的证据。',
+    },
+    body: [
+      {
+        en: 'Measured on 2026-08-27, from repository metadata and README text alone. recursionpharma/gflownet (MIT, default branch trunk) has 295 stars, 54 forks and 24 open issues, took 2 commits in all of 2026 — both on 2026-05-21 — and its trunk tasks are seh_frag, seh_frag_moo, qm9, qm9_moo, make_rings and toy_seq: no reaction environment, no docking, no ADMET, no PMO harness. GFNOrg/torchgfn has 313 stars, 57 forks and 52 open issues, and its README scopes the library to "fast prototyping" and to accompanying researchers in "learning about" GFlowNets; none of the gym environments it ships is molecular. mirunacrt/synflownet (MIT, 135 stars, 22 forks) stops at 2025-01-31. SeonghwanSeo/RxnFlow (MIT, 38 stars, 9 forks, last commit 2025-10-23) keeps a vendored copy of recursionpharma/gflownet v0.2.0 under src/gflownet/, and its README states that the improved in-house architecture drives the commercial product HyperLab while the public "current version cannot reproduce the results of the paper". recursionpharma/synflownet-boltz carries its owner\'s own repository properties environment=Non-Prod, business-criticality=Tier-4, repo-type=Informational, and has had zero commits since the 2025-06-27 initial push. And in Julia the General registry returns 404 for GFlowNet, for GFlowNets and for GenerativeFlowNetworks alike — the ecosystem holds no GFlowNet package at all.',
+        zh: '2026-08-27 实测，全部来自仓库元数据与 README 文本。recursionpharma/gflownet（MIT，默认分支 trunk）有 295★ / 54 fork / 24 open issue，2026 全年只有 2 个 commit —— 都在 2026-05-21 —— 主干任务是 seh_frag、seh_frag_moo、qm9、qm9_moo、make_rings、toy_seq：无 reaction 环境、无 docking、无 ADMET、无 PMO harness。GFNOrg/torchgfn 有 313★ / 57 fork / 52 open issue，README 把自己的范围写成 "fast prototyping" 与陪伴研究者 "learning about" GFlowNets；它 shipped 的 gym 环境里没有一个是分子环境。mirunacrt/synflownet（MIT，135★ / 22 fork）停在 2025-01-31。SeonghwanSeo/RxnFlow（MIT，38★ / 9 fork，最后提交 2025-10-23）在 src/gflownet/ 下保留 recursionpharma/gflownet v0.2.0 的 vendored 副本，README 声明改进版 in-house 架构在驱动商业产品 HyperLab，而公开版 "current version 不能复现论文结果"。recursionpharma/synflownet-boltz 带着仓库所有者自己写的 custom properties：environment=Non-Prod、business-criticality=Tier-4、repo-type=Informational，2025-06-27 首推后零 commit。而在 Julia 侧，General registry 对 GFlowNet、GFlowNets、GenerativeFlowNetworks 一律返回 404 —— 这个生态里没有任何 GFlowNet 包。',
+      },
+      {
+        en: 'Why nothing accumulated is an inference, not a measurement. The differentiating contribution in this field sits in the environment layer — the reaction MDP, the fragment library, the docking oracle, the ADMET filter — and the environment layer has no stable interface. With nothing to implement against, nothing can be upstreamed, so each contribution ships as its own fork: RGFN, SynFlowNet, RxnFlow, Genetic GFN, A-GFN, TacoGFN and S3-GFN are seven mutually incompatible codebases, and the capability is scattered across them. Contrast the one comparable stack that does accumulate. REINVENT4 is Apache-2.0, uses a namespace-package plugin mechanism, and lets a site attach its own scoring component with zero changes to the core — because the shared interface is score(smiles) -> float. One function signature.',
+        zh: '为什么没能积累，这是推断而非实测。这个领域的差异化贡献在环境层 —— reaction MDP、fragment library、docking oracle、ADMET 过滤 —— 而环境层没有稳定接口。没有可供实现的对象，就没有任何东西能上游，于是每份贡献都以自己的 fork 出货：RGFN、SynFlowNet、RxnFlow、Genetic GFN、A-GFN、TacoGFN、S3-GFN 是七个互不兼容的代码库，能力散在它们之间。对照唯一一个可比且确实在积累的栈：REINVENT4 是 Apache-2.0、用 namespace package 插件机制，一个站点核心零改动就能接上自有 scoring component —— 因为共享接口是 score(smiles) -> float。一个函数签名。',
+      },
+      {
+        en: 'One documented attempt, presented as an attempt. danielchen26/Gflownet is a Julia implementation (MIT, Project.toml version 1.0.0, author "Tianchi Chen", Zenodo 10.5281/zenodo.22117533), created 2025-05-17, last pushed 2026-08-27, 94,661 KB across 152 .jl files, on Julia 1.11 with Lux 1.6 + Zygote 0.6 for autodiff, PythonCall 0.9.31 as the RDKit bridge and Oxygen for its HTTP server. It answers the interface question with 7 generic functions, written out verbatim in the header of its molecular_generation.jl — state_to_features, is_terminal_state, reward, is_applicable, apply_action, find_parent_for_action, plus core/interface.jl. The core is balance.jl (38,150 B; TB / DB / FM / SubTB), interface.jl (32,911 B), policies.jl (30,471 B), flows.jl (20,198 B), sampling.jl (11,438 B), multi_start.jl (10,969 B); the applications are grid_world.jl (17,366 B), molecular_generation.jl (31,572 B, BRICS fragment-based), molecular_design.jl (12,181 B, atom-level, marked legacy in the README), causal_discovery.jl (10,303 B), active_learning.jl (7,976 B); the extensions are information.jl (4,357 B, information-theoretic objectives), non_acyclic.jl (6,622 B), continuous.jl (3,724 B). Files present here that the Python reference implementations do not carry: a PMO harness (test_pmo.jl), docking and oracle test abstractions (test_docking.jl, test_oracles.jl), a cross-objective comparison (experiments/objective_comparison_drd2.jl together with reports/2026-03-01_molecular_generation_benchmark_report.md), log Z as a first-class object (examples/core_features/learnable_partition_function, alongside sub_trajectory_balance, flow_matching, direct_flow and multi_start), and information-theoretic objectives — with 15 molecular test files in all under test/applications/molecular/. What it lacks, at exactly the same weight: it is not registered in the General registry, so Pkg.add("GFlowNet") fails today; PythonCall sits in [deps] rather than as a weak dependency behind an extension, so every user is forced to drag a Python environment along; and the name is inconsistent in three places — repository Gflownet, package GFlowNet, README title GFlowNet.jl. An implementation that cannot be installed by name has not yet solved the accumulation problem it describes.',
+        zh: '一个有文档的尝试，就当成一个尝试来看。danielchen26/Gflownet 是一个 Julia 实现（MIT，Project.toml version 1.0.0，author "Tianchi Chen"，Zenodo 10.5281/zenodo.22117533），created 2025-05-17、last push 2026-08-27，94,661 KB、152 个 .jl 文件，跑在 Julia 1.11 上，autodiff 用 Lux 1.6 + Zygote 0.6，RDKit 桥用 PythonCall 0.9.31，HTTP server 用 Oxygen。它对接口问题的回答是 7 个泛型函数，逐字写在它的 molecular_generation.jl 文件头里 —— state_to_features、is_terminal_state、reward、is_applicable、apply_action、find_parent_for_action，加 core/interface.jl。core 是 balance.jl（38,150 B；TB / DB / FM / SubTB）、interface.jl（32,911 B）、policies.jl（30,471 B）、flows.jl（20,198 B）、sampling.jl（11,438 B）、multi_start.jl（10,969 B）；applications 是 grid_world.jl（17,366 B）、molecular_generation.jl（31,572 B，BRICS fragment-based）、molecular_design.jl（12,181 B，atom-level，README 标 legacy）、causal_discovery.jl（10,303 B）、active_learning.jl（7,976 B）；extensions 是 information.jl（4,357 B，信息论目标）、non_acyclic.jl（6,622 B）、continuous.jl（3,724 B）。这里有、而 Python 侧参考实现没有的文件：PMO harness（test_pmo.jl）、docking 与 oracle 测试抽象（test_docking.jl、test_oracles.jl）、跨目标函数对比（experiments/objective_comparison_drd2.jl 连同 reports/2026-03-01_molecular_generation_benchmark_report.md）、log Z 作为一等公民（examples/core_features/learnable_partition_function，旁边还有 sub_trajectory_balance、flow_matching、direct_flow、multi_start）、以及信息论目标 —— test/applications/molecular/ 下共 15 个分子测试文件。它还缺的，权重完全相同：未注册到 General registry，Pkg.add("GFlowNet") 目前失败；PythonCall 在 [deps] 而不是放在 extension 后面当 weakdep，每个用户都被迫拖一个 Python 环境；命名三处不一致 —— repo Gflownet、包名 GFlowNet、README 标题 GFlowNet.jl。一个不能按名字安装的实现，还没有解决它自己描述的那个积累问题。',
+      },
+      {
+        en: 'One proposal that exists in no implementation yet — a claim, not a result: a pointed-DAG legality checker. The motivation is a measured fact already on this page. SynFlowNet (ICLR 2025) reports that with a uniform backward policy only 11.0 ± 3.7% of backward trajectories in its reaction MDP get back to s₀, and that defect surfaced in a paper rather than in a test. The correctness of find_parent_for_action is the implicit landmine under every GFlowNet paper: get it wrong and the loss still decreases. No library ships diagnostics for backward reachability, orphaned parents, or flow-conservation residuals, so a checker that reports those three numbers before training starts belongs in the environment interface itself — in whichever language the interface finally stabilises.',
+        zh: '一个尚不存在于任何实现中的提议 —— 这是主张，不是结果：pointed-DAG 合法性检查器。动机是这一页上已有的实测事实。SynFlowNet（ICLR 2025）报告在它的 reaction MDP 上用均匀 backward policy 时，只有 11.0 ± 3.7% 的反向轨迹能回到 s₀，而这个缺陷是在论文里、不是在测试里被发现的。find_parent_for_action 的正确性是每篇 GFlowNet 论文底下的隐性地雷：写错了，loss 照样下降。没有任何库提供反向可达率、孤立父节点、flow 守恒残差的诊断，所以一个在训练开始前就报出这三个数字的检查器，应当属于环境接口本身 —— 无论这个接口最终在哪种语言里稳定下来。',
+      },
+      {
+        en: 'The boundary of this section, written down so it cannot be over-read: everything above was read through the GitHub API — the file tree, the README, Project.toml, file sizes — plus a path probe against the Julia registry. Nothing was cloned, no test was executed, no benchmark was reproduced. This section therefore makes no claim about any test pass rate and no claim about performance, for danielchen26/Gflownet or for anything else; a file named test_pmo.jl is evidence that the file exists, not that it passes. The star, fork, issue and commit counts are a 2026-08-27 snapshot and will drift.',
+        zh: '这一节的边界，写下来以免被过度解读：以上全部经 GitHub API 读取 —— 文件树、README、Project.toml、文件大小 —— 加一次对 Julia registry 的路径探测。没有 clone、没有运行任何测试、没有复现任何基准。因此这一节对 danielchen26/Gflownet 或任何其他实现，都不作任何测试通过率主张、不作任何性能主张；一个叫 test_pmo.jl 的文件只能证明该文件存在，不能证明它通过。★数、fork 数、issue 数与 commit 数是 2026-08-27 的时点快照，会漂移。',
+      },
+    ],
+    tableIds: ['ecosystem-status'],
+    datumIds: [
+      'recursionGflownetCommits',
+      'recursionZeroMentions',
+      'synflownetBackward',
+    ],
+  },
 ];
 
 /**
@@ -411,5 +452,13 @@ export const openGaps: LText[] = [
   {
     en: 'Gkeka et al., "Computational Hit Finding: An Industry Perspective" (J Med Chem 68(11):10507, 2025) is available in abstract only (closed OA; all six full-text routes failed). Its in-text head-to-head hit-rate comparison of "generative vs ultra-large-scale screening vs DEL" = UNVERIFIED; nor was any firsthand DEL vs generative head-to-head comparison found.',
     zh: 'Gkeka 等《Computational Hit Finding: An Industry Perspective》（J Med Chem 68(11):10507, 2025）仅摘要可得（closed OA，六条取全文路径全部失败）。其正文的"生成式 vs 超大规模筛选 vs DEL"头对头命中率对比 = UNVERIFIED；也未找到任何 DEL vs 生成式的一手头对头比较。',
+  },
+  {
+    en: 'The test pass rate and the benchmark numbers of danielchen26/Gflownet are UNVERIFIED: only repository metadata was read through the GitHub API and nothing was cloned or executed. The existence of test_pmo.jl / test_docking.jl / objective_comparison_drd2.jl and of reports/2026-03-01_molecular_generation_benchmark_report.md does not mean those tests pass or that those numbers reproduce.',
+    zh: 'danielchen26/Gflownet 的测试通过率与基准数字 = UNVERIFIED：仅经 GitHub API 读取仓库元数据，未 clone、未运行。test_pmo.jl / test_docking.jl / objective_comparison_drd2.jl 与 reports/2026-03-01_molecular_generation_benchmark_report.md 的存在，不等于这些测试通过、也不等于这些数字可复现。',
+  },
+  {
+    en: 'The Julia registry probe is a point-in-time snapshot taken on 2026-08-27 (three package paths: GFlowNet, GFlowNets, GenerativeFlowNetworks). The same holds for every repository commit count, star count, fork count and open-issue count on this page: they are that day\'s values, not standing facts.',
+    zh: 'Julia registry 探测是 2026-08-27 的时点快照（三个包路径：GFlowNet、GFlowNets、GenerativeFlowNetworks）。本页所有仓库的 commit 计数、★数、fork 数与 open issue 数同理：它们是那一天的值，不是恒定事实。',
   },
 ];

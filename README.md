@@ -39,6 +39,35 @@ molecules synthesised and assayed by any GFlowNet method. Their job changes
 from "a reason not to touch it" to "the constraint on which layers it can
 carry".
 
+## Infrastructure gap
+
+The panel closes with the state of the shared GFlowNet toolchain, probed on
+2026-08-27 as repository metadata:
+
+- `recursionpharma/gflownet` — 2 commits in all of 2026; trunk tasks are only
+  seh_frag, seh_frag_moo, qm9, qm9_moo, make_rings, toy_seq. No reaction
+  environment, no docking, no ADMET, no PMO harness.
+- `GFNOrg/torchgfn` — 52 open issues; the README scopes it to "fast
+  prototyping" and to "learning about" GFlowNets. No molecular environment.
+- `mirunacrt/synflownet` — last commit 2025-01-31.
+- `SeonghwanSeo/RxnFlow` — `src/gflownet/` is a vendored copy of
+  recursionpharma/gflownet v0.2.0; the README states the authors' improved
+  in-house architecture powers the commercial HyperLab and that the public
+  version cannot reproduce the paper's results.
+- Julia General registry — `GFlowNet`, `GFlowNets` and
+  `GenerativeFlowNetworks` all return 404. Julia carries no GFlowNet package.
+
+The section then documents one attempt at filling that gap
+(`danielchen26/Gflownet`), listing what it already has that the Python
+reference implementations lack **and** what it still lacks, with equal weight.
+It proposes a pointed-DAG validity checker, motivated by the measured finding
+that SynFlowNet's uniform backward policy returns only 11.0 +/- 3.7% of
+trajectories to the source state.
+
+Boundary: repository metadata, README text and registry probes only. Nothing
+was cloned, no test was run, no benchmark was reproduced. The panel therefore
+makes no pass-rate or performance claim about any repository.
+
 ## Language
 
 The panel ships in English and Chinese. English is the default; the switcher

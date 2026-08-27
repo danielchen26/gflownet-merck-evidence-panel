@@ -6,6 +6,7 @@ import { AttritionFunnel } from './components/AttritionFunnel'
 import { MultiPathDag } from './components/MultiPathDag'
 import { GapsPanel } from './components/GapsPanel'
 import { IntegrationStack } from './components/IntegrationStack'
+import { EcosystemStatus } from './components/EcosystemStatus'
 import { sections, openGaps } from './data/sections'
 import { tables, merckFunnel, sources } from './data/evidence'
 import { t, UI, useLang } from './i18n/i18n'
@@ -248,6 +249,16 @@ export default function App() {
         )}
 
         {SECTION['pilot'] && <SectionShell section={SECTION['pilot']} />}
+
+        {SECTION['infrastructure'] && (
+          <SectionShell section={SECTION['infrastructure']}>
+            {/* EcosystemStatus hand-rolls its own probe table: each of the six
+                rows carries a different source URL, which EvidenceTable's
+                single-source model cannot express. TABLE['ecosystem-status']
+                is intentionally left unrendered. */}
+            <EcosystemStatus />
+          </SectionShell>
+        )}
 
         <GapsPanel
           openGaps={openGaps}

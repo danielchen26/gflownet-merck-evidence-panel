@@ -212,9 +212,39 @@ const S = {
   },
   recursionGflownetRepo: {
     title: 'recursionpharma/gflownet (MIT，默认分支 trunk)',
-    venue: 'GitHub 仓库状态',
+    venue: 'GitHub 仓库状态 —— tree / tasks 目录 / commit 列表经 GitHub API 读取，2026-08-27',
     url: 'https://github.com/recursionpharma/gflownet',
-    firsthand: false,
+    firsthand: true,
+  },
+  torchgfnRepo: {
+    title: 'GFNOrg/torchgfn (313★ / 57 fork / 52 open issue)',
+    venue: 'GitHub 仓库状态 + README 自述 ("for fast prototyping" / "learning about" GFlowNets)，经 GitHub API 读取，2026-08-27',
+    url: 'https://github.com/GFNOrg/torchgfn',
+    firsthand: true,
+  },
+  synflownetRepo: {
+    title: 'mirunacrt/synflownet (MIT，135★ / 22 fork，最后提交 2025-01-31)',
+    venue: 'GitHub 仓库状态，经 GitHub API 读取，2026-08-27',
+    url: 'https://github.com/mirunacrt/synflownet',
+    firsthand: true,
+  },
+  rxnflowRepo: {
+    title: 'SeonghwanSeo/RxnFlow (MIT，38★ / 9 fork，最后提交 2025-10-23)',
+    venue: 'GitHub 仓库状态 + README —— src/gflownet/ 为 recursionpharma/gflownet v0.2.0 的 vendored 副本，经 GitHub API 读取，2026-08-27',
+    url: 'https://github.com/SeonghwanSeo/RxnFlow',
+    firsthand: true,
+  },
+  juliaRegistry: {
+    title: 'JuliaRegistries/General',
+    venue: '对 GFlowNet / GFlowNets / GenerativeFlowNetworks 三个包名的路径探测，2026-08-27，均返回 404',
+    url: 'https://github.com/JuliaRegistries/General',
+    firsthand: true,
+  },
+  gflownetJl: {
+    title: 'danielchen26/Gflownet',
+    venue: 'Julia · MIT · v1.0.0 · Zenodo 10.5281/zenodo.22117533 · tree/README/Project.toml 经 GitHub API 读取，2026-08-27',
+    url: 'https://github.com/danielchen26/Gflownet',
+    firsthand: true,
   },
   hyperlab: {
     title: 'HITS / HyperLab — Hyper Screening X 官方 release note 与定价页',
@@ -432,6 +462,81 @@ export const tables: EvidenceTable[] = [
       { method: { en: 'RGFN', zh: 'RGFN' }, cells: ['46.75–50.25%', '−9.84'], provenance: 'refuted' },
     ],
     source: S.s3gfn2026,
+  },
+  {
+    id: 'ecosystem-status',
+    caption: {
+      en: 'The shared GFlowNet toolchain, read as repository metadata: no reference implementation carries a real molecular task, and the Julia ecosystem carries no GFlowNet package at all',
+      zh: '共享 GFlowNet 工具链的仓库元数据实测：没有一个参考实现带真实分子任务，而 Julia 生态里没有任何 GFlowNet 包',
+    },
+    budgetNote: {
+      en: 'Snapshot 2026-08-27 · repository metadata and README text only — nothing was cloned, no test was run, no benchmark was reproduced',
+      zh: '2026-08-27 时点快照 · 仅仓库元数据与 README 文本 —— 未 clone、未运行测试、未复现任何基准',
+    },
+    columns: [
+      { en: 'Repository', zh: '仓库' },
+      { en: 'License', zh: '许可' },
+      { en: 'Activity signal', zh: '活跃度信号' },
+      { en: 'What it lacks', zh: '它缺什么' },
+    ],
+    rows: [
+      {
+        method: { en: 'recursionpharma/gflownet', zh: 'recursionpharma/gflownet' },
+        cells: [
+          'MIT',
+          { en: '2 commits in all of 2026 (both 2026-05-21) · 295★ / 54 forks / 24 open issues', zh: '2026 全年 2 个 commit（均在 2026-05-21）· 295★ / 54 fork / 24 open issue' },
+          { en: 'trunk tasks are only seh_frag, seh_frag_moo, qm9, qm9_moo, make_rings, toy_seq — no reaction environment, no docking, no ADMET, no PMO harness', zh: 'trunk 任务只有 seh_frag、seh_frag_moo、qm9、qm9_moo、make_rings、toy_seq —— 无 reaction 环境、无 docking、无 ADMET、无 PMO harness' },
+        ],
+        provenance: 'measured',
+      },
+      {
+        method: { en: 'GFNOrg/torchgfn', zh: 'GFNOrg/torchgfn' },
+        cells: [
+          { en: 'not read', zh: '未读取' },
+          { en: '313★ / 57 forks / 52 open issues', zh: '313★ / 57 fork / 52 open issue' },
+          { en: 'no molecular environment among the shipped gym environments; the README scopes the library to "fast prototyping" and to accompanying researchers in "learning about" GFlowNets', zh: 'shipped gym 环境中无分子环境；README 自述范围是 "fast prototyping" 与陪伴研究者 "learning about" GFlowNets' },
+        ],
+        provenance: 'measured',
+      },
+      {
+        method: { en: 'mirunacrt/synflownet', zh: 'mirunacrt/synflownet' },
+        cells: [
+          'MIT',
+          { en: 'last commit 2025-01-31 · 135★ / 22 forks', zh: '最后提交 2025-01-31 · 135★ / 22 fork' },
+          { en: 'its reaction environment never reached the reference implementation — the trunk task list still has none', zh: '它的 reaction 环境从未进入参考实现 —— trunk 任务列表里至今没有' },
+        ],
+        provenance: 'measured',
+      },
+      {
+        method: { en: 'SeonghwanSeo/RxnFlow', zh: 'SeonghwanSeo/RxnFlow' },
+        cells: [
+          'MIT',
+          { en: 'last commit 2025-10-23 · 38★ / 9 forks · src/gflownet/ is a vendored copy of recursionpharma/gflownet v0.2.0', zh: '最后提交 2025-10-23 · 38★ / 9 fork · src/gflownet/ 是 recursionpharma/gflownet v0.2.0 的 vendored 副本' },
+          { en: 'the README states that the author\'s improved in-house architecture drives the commercial product HyperLab, and that the public "current version cannot reproduce the results of the paper"', zh: 'README 声明作者改进版 in-house 架构在驱动商业产品 HyperLab，且公开版 "current version 不能复现论文结果"' },
+        ],
+        provenance: 'measured',
+      },
+      {
+        method: { en: 'danielchen26/Gflownet (Julia)', zh: 'danielchen26/Gflownet（Julia）' },
+        cells: [
+          'MIT',
+          { en: 'created 2025-05-17 · last push 2026-08-27 · 152 .jl files · Project.toml v1.0.0 · Zenodo 10.5281/zenodo.22117533', zh: 'created 2025-05-17 · last push 2026-08-27 · 152 个 .jl 文件 · Project.toml v1.0.0 · Zenodo 10.5281/zenodo.22117533' },
+          { en: 'not registered in the General registry, so Pkg.add("GFlowNet") fails today; PythonCall 0.9.31 sits in [deps] rather than as a weak dependency, so every user drags in a Python environment; the name differs in three places (repo Gflownet / package GFlowNet / README title GFlowNet.jl)', zh: '未注册到 General registry，Pkg.add("GFlowNet") 目前失败；PythonCall 0.9.31 在 [deps] 而非 weakdep，每个用户被迫拖一个 Python 环境；命名三处不一致（repo Gflownet / 包名 GFlowNet / README 标题 GFlowNet.jl）' },
+        ],
+        provenance: 'measured',
+      },
+      {
+        method: { en: 'Julia General registry', zh: 'Julia General registry' },
+        cells: [
+          { en: 'n/a', zh: '不适用' },
+          { en: 'GFlowNet, GFlowNets and GenerativeFlowNetworks — all three package paths return 404 (probed 2026-08-27)', zh: 'GFlowNet、GFlowNets、GenerativeFlowNetworks —— 三个包路径全部返回 404（2026-08-27 探测）' },
+          { en: 'the Julia ecosystem has no GFlowNet package at all: there is nothing to install, nothing to depend on, nothing to upstream into', zh: 'Julia 生态里没有任何 GFlowNet 包：无可安装、无可依赖、无可上游的对象' },
+        ],
+        provenance: 'refuted',
+        emphasis: true,
+      },
+    ],
+    source: S.juliaRegistry,
   },
 ];
 

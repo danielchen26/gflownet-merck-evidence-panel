@@ -39,6 +39,63 @@ molecules synthesised and assayed by any GFlowNet method. Their job changes
 from "a reason not to touch it" to "the constraint on which layers it can
 carry".
 
+## Decision brief
+
+The panel opens with the decision, above the first evidence section, so a
+reader who has to sign something does not have to derive the recommendation
+from ten sections of measurement.
+
+- **Approve** one budget-matched three-way control — GA / RL / GFlowNet, same
+  action space, same reward. Published comparisons flip on budget: Saturn
+  reaches its result in 1,000 oracle calls against RGFN at 400,000, and SynGA
+  needs 16,000 where the GFlowNet family spends 64,000.
+- **Refuse** the framework-level bet, on the supply-chain probe below.
+- **Put the money in the oracle layer** — predictor accuracy, Boltz-2 as a
+  structure-grounded scorer, and a rewritten MPO specification. In Program 1,
+  12,796 molecules were generated and 0 satisfied both thresholds at once; the
+  six-parameter MPO collapsed onto a single species and joint optimisation was
+  abandoned. The historical library already holds 95 single-digit nM compounds.
+
+Kill criteria are pre-registered rather than chosen after the numbers arrive:
+GFlowNet enters the production roadmap only if, at matched budget, it wins on
+potency **and** on #Circles at the same time — not IntDiv — and the control arm
+must be KL-regularized RL rather than vanilla REINVENT, because RTB reduces to
+Trust-PCL and KL-regularized RL reaches comparable performance.
+
+The brief carries **no dollar figures**. GPU-hour cost, per-compound price,
+software quotes and engineer salaries have no firsthand source, so all four are
+absent rather than estimated; every magnitude is in a checkable unit (oracle
+calls, compounds synthesised and assayed, weeks, commits, R²).
+
+## Research agenda
+
+The constructive half. Seven items, each nailed to a documented failure mode
+and to an experiment that could falsify it. Nothing here has been carried out,
+so every proposal is coloured as a claim, never as a measurement.
+
+It opens by resetting the comparison class: a GFlowNet optimises p(x) ∝ R(x),
+which is a sampling objective, so its natural comparison group is MCMC and
+amortised posterior inference — not argmax-seeking RL. *GFlowNet Foundations*
+(JMLR 24(210)) states that position itself. Putting it in the right class
+repairs none of the numbers above; it repairs the question.
+
+| | Item | Hangs on |
+|---|---|---|
+| **A** | Fix the ruler before the method | IntDiv violates Monotonicity and Subadditivity; under #Circles, 0 and 0 diverse hits on DRD2 and JNK3 against 21 and 15 |
+| **B** | Give β a principle instead of a sweep | β 1 → 50 moves PMO 11.083 → 16.213 while diversity falls 0.812 → 0.432 |
+| **C** | Make pointed-DAG legality first-class | 11.0 ± 3.7% backward reachability under uniform P_B; 1.0 ± 0.8% for a TB-trained free P_B |
+| **D** | Fix long-trajectory credit assignment | FM → DB → TB → SubTB(λ) is a patch chain, and each link says so |
+| **E** | Make exploration native instead of rented | Genetic GFN 16.213 → 15.626 on native ε-greedy, 15.738 with the genetic search removed |
+| **F** | Publish the sparse-reward threshold, separate the two axes | fragment GFlowNet found no high-reward molecules where the proxy set holds <100 actives |
+| **G** | Move the theory onto the representation that wins | multi-path 9.918 / 9.918, where the DAG correction is load-bearing; single-path SMILES 16.213, where it is empty |
+
+**A and C are the priorities**: neither needs new theory, nobody has done
+either, and either one changes what the field believes about its own published
+record. A is a re-scoring job; C is a reachability check that no library
+currently ships. Only **B** would produce new theory, and it has no precedent
+in the literature — it is an open problem, not a result waiting to be written
+up.
+
 ## Infrastructure gap
 
 The panel closes with the state of the shared GFlowNet toolchain, probed on

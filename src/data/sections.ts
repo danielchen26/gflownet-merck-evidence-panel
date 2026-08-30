@@ -250,6 +250,34 @@ export const sections: Section[] = [
     ],
   },
   {
+    id: 'platform',
+    budgetMarker: { en: '4 picks', zh: '4 个选型' },
+    kicker: { en: 'Composition', zh: '组合' },
+    title: {
+      en: 'Making it a platform: four picks, four interfaces',
+      zh: '把它做成平台：四个选型，四个接口',
+    },
+    standfirst: {
+      en: 'The previous section says where GFlowNet plugs in. This one takes the harder question: assume the goal is the strongest molecular generation platform available in 2026 — what belongs in each of the four layers, and what is the interface between them? A platform is not the winner of a method contest. It is four choices made separately, joined by boundaries narrow enough to survive being reconnected.',
+      zh: '上一节说清了 GFlowNet 插在哪里。这一节接更难的问题：假定目标是搭出 2026 能搭出的最强分子生成平台 —— 四层里各应该放什么，层与层之间的接口又是什么？平台不是方法竞赛的冠军，而是四个分开做出的选择，被窄到能反复重连的边界连起来。',
+    },
+    body: [
+      {
+        en: 'The field cannot answer this today because almost every published comparison moves two layers at once, and a paper that moves both can attribute neither. The two effects are both large and both real. Hold the sampler fixed and change only the MDP: independent AiZynthFinder success moves from 0% to 62%. Hold the MDP fixed and change only the sampler: a GA matches the whole GFlowNet family on 16,000 oracle calls against 64,000, and an RL method wins outright on 1/400 of the budget. Until those two axes are varied one at a time, "which method is best" is not a question anyone has measured.',
+        zh: '领域今天答不出这个问题，因为几乎每篇已发表的对比都同时动两层，而同时动两层的论文对哪一个都无法归因。两个效应都很大、都真实。固定 sampler、只换 MDP：独立 AiZynthFinder 成功率从 0% 走到 62%。固定 MDP、只换 sampler：一个 GA 用 16,000 次 oracle 调用打平整个 GFlowNet 家族的 64,000 次，一个 RL 方法用 1/400 的预算全面胜出。在这两个轴被逐一单独变动之前，"哪个方法最好"根本不是一个有人测过的问题。',
+      },
+      {
+        en: 'The interface column is the load-bearing one, and the reason is measured rather than aesthetic. REINVENT4 accumulated an ecosystem because the shared boundary is one function signature: score a SMILES, get a number. GFlowNet\'s differentiating contribution sits at the environment layer instead, and the environment layer has no stable interface — so nothing can be upstreamed, capability scatters across 7 forks that never merged back, and the reference implementation takes 2 commits in a year. "Organically strongest" is therefore not a modelling problem. It is an interface problem, and it is the one this page keeps returning to.',
+        zh: '接口那一列是承重的，理由是实测而非审美。REINVENT4 能长出生态，是因为共享边界只有一个函数签名：给一个 SMILES，返回一个数。而 GFlowNet 的差异化贡献坐在环境层，环境层没有稳定接口 —— 于是什么都无法上游，能力散在 7 个从未合回主干的 fork 里，参考实现一年 2 个 commit。所以"有机地最强"不是一个建模问题，是一个接口问题，也是这一页反复回到的那个问题。',
+      },
+      {
+        en: 'The boundary of this section, stated rather than implied: the four picks below are a proposal. No one has assembled this stack, and the benchmark that would settle its central claim — the same reaction MDP, one oracle budget, four samplers — does not exist. What is measured is each reason, not each pick.',
+        zh: '本节的边界，明说而非暗示：下面四个选型是提议。没有人搭过这个栈，而能定下它核心主张的那个基准 —— 同一 reaction MDP、同一 oracle 预算、四个 sampler —— 并不存在。被实测的是每一条理由，不是每一个选型。',
+      },
+    ],
+    datumIds: ['fragmentToReaction', 'aiddisonAssets'],
+  },
+  {
     id: 'wetlab',
     budgetMarker: '0 synthesized',
     kicker: { en: 'Asymmetry', zh: '不对称' },
@@ -331,6 +359,30 @@ export const sections: Section[] = [
       'deliveryLoss',
       'mpoWeightCollapse',
     ],
+  },
+  {
+    id: 'promise',
+    budgetMarker: { en: '6 claims', zh: '6 条主张' },
+    kicker: { en: 'Audit', zh: '审计' },
+    title: {
+      en: 'What it genuinely brings, graded one claim at a time',
+      zh: '它真正带来什么 —— 逐条评级',
+    },
+    standfirst: {
+      en: '"Is GFlowNet promising?" has no honest single answer, and giving one is how the question stays open. Six capabilities, each graded separately against what has actually been measured, each paired with the experiment that would move it: established, demonstrated, untested, or refuted. Two are established. Two are refuted. Two have never been tried — and those two are the only genuinely open question on this page.',
+      zh: '"GFlowNet promising 吗"没有一个诚实的单一答案，而给出单一答案正是这个问题一直悬着的原因。六项能力，各自独立对着已实测的东西评级，各自配一个能改变评级的实验：established、demonstrated、untested、refuted。两项已确立。两项被否证。两项从未被试过 —— 而那两项是这一页上唯一真正开放的问题。',
+    },
+    body: [
+      {
+        en: 'The grades separate two things the phrase "promising" runs together: whether a claim is true, and whether anyone has checked. The distributional guarantee on a DAG is a theorem, so it is established — but a theorem is established about its premises, and the premise here is a legal pointed DAG, which is exactly what fails in practice. Off-policy validity is established and is also the one property the three strongest published results actually monetize. Molecule quality under a fixed budget is refuted, and no further experiment is needed there; what is needed is to stop selling it.',
+        zh: '评级把"promising"这个词混在一起的两件事分开了：一条主张是否为真，以及有没有人检查过。DAG 上的分布性保证是一个定理，所以它 established —— 但定理是相对于它的前提 established 的，而这里的前提是一个合法的 pointed DAG，恰恰就是实践中失效的那一条。off-policy 有效性 established，而且是三个最强已发表结果真正变现的唯一一条。固定预算下的分子质量被否证，那里不需要更多实验；需要的是停止拿它当卖点。',
+      },
+      {
+        en: 'The audit closes with a first-hand run rather than another citation, because it converts the central worry from theory into measurement. The whole failure mode this page keeps naming — get the structure wrong and the loss still decreases — is not a hypothetical about somebody else\'s code. It happened, it was found only because someone stepped past a skip, and the numbers are in the panel below.',
+        zh: '审计以一次一手运行结尾，而不是再一条引用，因为它把核心担忧从理论变成了测量。这一页反复点名的那个失效模式 —— 结构写错了，loss 照样下降 —— 不是关于别人代码的假设。它真的发生了，而且只因为有人越过了一个 skip 才被发现，数字在下面的面板里。',
+      },
+    ],
+    datumIds: ['pmoGfnVsRandom', 'gfnDrd2Jnk3', 'synflownetBackward', 'gfnSynthesized'],
   },
   {
     id: 'agenda',
@@ -450,12 +502,12 @@ export const sections: Section[] = [
         zh: '一个有文档的尝试，就当成一个尝试来看。danielchen26/Gflownet 是一个 Julia 实现（MIT，Project.toml version 1.0.0，author "Tianchi Chen"，Zenodo 10.5281/zenodo.22117533），created 2025-05-17、last push 2026-08-27，94,661 KB、152 个 .jl 文件，跑在 Julia 1.11 上，autodiff 用 Lux 1.6 + Zygote 0.6，RDKit 桥用 PythonCall 0.9.31，HTTP server 用 Oxygen。它对接口问题的回答是 7 个泛型函数，逐字写在它的 molecular_generation.jl 文件头里 —— state_to_features、is_terminal_state、reward、is_applicable、apply_action、find_parent_for_action，加 core/interface.jl。core 是 balance.jl（38,150 B；TB / DB / FM / SubTB）、interface.jl（32,911 B）、policies.jl（30,471 B）、flows.jl（20,198 B）、sampling.jl（11,438 B）、multi_start.jl（10,969 B）；applications 是 grid_world.jl（17,366 B）、molecular_generation.jl（31,572 B，BRICS fragment-based）、molecular_design.jl（12,181 B，atom-level，README 标 legacy）、causal_discovery.jl（10,303 B）、active_learning.jl（7,976 B）；extensions 是 information.jl（4,357 B，信息论目标）、non_acyclic.jl（6,622 B）、continuous.jl（3,724 B）。这里有、而 Python 侧参考实现没有的文件：PMO harness（test_pmo.jl）、docking 与 oracle 测试抽象（test_docking.jl、test_oracles.jl）、跨目标函数对比（experiments/objective_comparison_drd2.jl 连同 reports/2026-03-01_molecular_generation_benchmark_report.md）、log Z 作为一等公民（examples/core_features/learnable_partition_function，旁边还有 sub_trajectory_balance、flow_matching、direct_flow、multi_start）、以及信息论目标 —— test/applications/molecular/ 下共 15 个分子测试文件。截至 2026-08-27 探测它还缺的，权重完全相同 —— 三条都是打包问题而非能力问题，且在一个仍在活跃开发的仓库里都可能被一个 commit 关掉：当时未注册到 General registry，Pkg.add("GFlowNet") 会失败；PythonCall 在 [deps] 而不是放在 extension 后面当 weakdep，每个用户都被迫拖一个 Python 环境；命名三处不一致 —— repo Gflownet、包名 GFlowNet、README 标题 GFlowNet.jl。一个不能按名字安装的实现，还没有解决它自己描述的那个积累问题。',
       },
       {
-        en: 'One proposal that exists in no implementation yet — a claim, not a result: a pointed-DAG legality checker. The motivation is a measured fact already on this page. SynFlowNet (ICLR 2025) reports that with a uniform backward policy only 11.0 ± 3.7% of backward trajectories in its reaction MDP get back to s₀, and that defect surfaced in a paper rather than in a test. The correctness of find_parent_for_action is the implicit landmine under every GFlowNet paper: get it wrong and the loss still decreases. No library ships diagnostics for backward reachability, orphaned parents, or flow-conservation residuals, so a checker that reports those three numbers before training starts belongs in the environment interface itself — in whichever language the interface finally stabilises.',
-        zh: '一个尚不存在于任何实现中的提议 —— 这是主张，不是结果：pointed-DAG 合法性检查器。动机是这一页上已有的实测事实。SynFlowNet（ICLR 2025）报告在它的 reaction MDP 上用均匀 backward policy 时，只有 11.0 ± 3.7% 的反向轨迹能回到 s₀，而这个缺陷是在论文里、不是在测试里被发现的。find_parent_for_action 的正确性是每篇 GFlowNet 论文底下的隐性地雷：写错了，loss 照样下降。没有任何库提供反向可达率、孤立父节点、flow 守恒残差的诊断，所以一个在训练开始前就报出这三个数字的检查器，应当属于环境接口本身 —— 无论这个接口最终在哪种语言里稳定下来。',
+        en: 'One proposal that is now implemented and run, so this paragraph reports a result rather than a claim: a pointed-DAG legality checker. The motivation is a measured fact already on this page. SynFlowNet (ICLR 2025) reports that with a uniform backward policy only 11.0 ± 3.7% of backward trajectories in its reaction MDP get back to s₀, and that defect surfaced in a paper rather than in a test. The correctness of find_parent_for_action is the implicit landmine under every GFlowNet paper: get it wrong and the loss still decreases. No library shipped diagnostics for backward reachability, orphaned parents, or flow-conservation residuals, so a checker reporting those three numbers before training starts belongs in the environment interface itself. It has now been written against danielchen26/Gflownet and run on 2026-08-30, and the measured results are more interesting than the proposal was. On the shipped acyclic grid world, 4x4 explores 31 states over 39 edges: 9 of 30 states carry more than one parent, backward reachability to s0 is 100.0% over 200 walks, zero orphans, zero forward/backward conflicts. So the domain is a legal pointed DAG on which a constant backward policy would nevertheless be biased — two findings the report has to keep apart. Flip allow_all_moves on and the same grid drops to 82.5% reachability and fails, as it should. The molecular fragment domain returns inconclusive, because find_parent_for_action returns nothing unconditionally for MolState, so its parent set is empty by construction and P_B = 1 is an assumption about an unenumerated graph rather than a measured unique-parent value. Writing the tests then exposed a gap in the checker itself: backward_parent_states filters candidates through is_valid_backward_transition, so a WRONG hook is rejected rather than reported, the parent set silently collapses to empty, and downstream a wrong hook is indistinguishable from an absent one. Catching that needs the raw hook reconciled against apply_action directly, which is now a separate field. 27 tests, one per failure mode, and the verdict is three-valued so a thin exploration returns inconclusive instead of a green tick — the lesson the repository\'s own RDKit-skipped tree-invariant test already had in its comments — in whichever language the interface finally stabilises.',
+        zh: '一个现已实现并运行过的提议，所以这一段报的是结果而不是主张：pointed-DAG 合法性检查器。动机是这一页上已有的实测事实。SynFlowNet（ICLR 2025）报告在它的 reaction MDP 上用均匀 backward policy 时，只有 11.0 ± 3.7% 的反向轨迹能回到 s₀，而这个缺陷是在论文里、不是在测试里被发现的。find_parent_for_action 的正确性是每篇 GFlowNet 论文底下的隐性地雷：写错了，loss 照样下降。此前没有任何库提供反向可达率、孤立父节点、flow 守恒残差的诊断，所以一个在训练开始前就报出这三个数字的检查器，应当属于环境接口本身. 它现在已针对 danielchen26/Gflownet 写好并于 2026-08-30 运行，而实测结果比原提议更有意思。在出厂的无环 grid world 上，4×4 探索了 31 个状态、39 条边：30 个状态里有 9 个带一个以上父节点，到 s₀ 的反向可达率在 200 次走查下是 100.0%，零孤立节点、零正反向冲突。也就是说这个域是一个合法的 pointed DAG，但在它上面用常数反向策略依然是有偏的 —— 报告必须把这两个发现分开。把 allow_all_moves 打开，同一个 grid 掉到 82.5% 可达率并判 fail，正如它应该的。分子 fragment 域返回 inconclusive，因为 MolState 的 find_parent_for_action 无条件返回 nothing，其父集按构造为空，于是 P_B = 1 是关于一张没人枚举过的图的假设，而不是实测出来的唯一父节点值。而写测试又暴露了检查器自身的一个缺口：backward_parent_states 会把候选过一遍 is_valid_backward_transition，于是一个写错的 hook 是被拒绝而不是被报告，父集静默塌成空集，在下游一个错的 hook 与一个缺失的 hook 完全无法区分。要抓到它，必须把原始 hook 直接与 apply_action 对账，这现在是一个独立字段。27 个测试，一个失效模式一个，且判定是三值的 —— 探索太薄时返回 inconclusive 而不是绿灯，这正是该仓库自己那个被 RDKit 跳过的树不变量测试早已写在注释里的教训 —— 无论这个接口最终在哪种语言里稳定下来。',
       },
       {
-        en: 'The boundary of this section, written down so it cannot be over-read: everything above was read through the GitHub API — the file tree, the README, Project.toml, file sizes — plus a path probe against the Julia registry. Nothing was cloned, no test was executed, no benchmark was reproduced. This section therefore makes no claim about any test pass rate and no claim about performance, for danielchen26/Gflownet or for anything else; a file named test_pmo.jl is evidence that the file exists, not that it passes. The star, fork, issue and commit counts are a 2026-08-27 snapshot and will drift — and so will the three packaging gaps, which describe a repository under active development rather than fixed properties of it: registry absence, the PythonCall dependency class and the naming mismatch can each be closed by a single commit. Re-probe before citing any of them.',
-        zh: '这一节的边界，写下来以免被过度解读：以上全部经 GitHub API 读取 —— 文件树、README、Project.toml、文件大小 —— 加一次对 Julia registry 的路径探测。没有 clone、没有运行任何测试、没有复现任何基准。因此这一节对 danielchen26/Gflownet 或任何其他实现，都不作任何测试通过率主张、不作任何性能主张；一个叫 test_pmo.jl 的文件只能证明该文件存在，不能证明它通过。★数、fork 数、issue 数与 commit 数是 2026-08-27 的时点快照，会漂移 —— 那三条打包缺口同样会漂移，它们描述的是一个正在活跃开发中的仓库，而不是它的固有属性：registry 缺席、PythonCall 的依赖归类、命名不一致，每一条都可能被一个 commit 关掉。引用其中任何一条前请重新探测。',
+        en: 'The boundary of this section, written down so it cannot be over-read: everything above was read through the GitHub API — the file tree, the README, Project.toml, file sizes — plus a path probe against the Julia registry. Two things have since been executed first-hand and are reported as measurements rather than metadata: the full test suite, and the pointed-DAG validator described above. What remains unmeasured is performance — no benchmark was reproduced, so this section still makes no claim about speed or about PMO scores for any implementation. The chemistry assertions are a separate gap: RDKit is opt-in in this suite and PythonCall could not be loaded in the environment used, so every RDKit-gated assertion was skipped and the molecular chemistry path remains unverified by this run. The star, fork, issue and commit counts are a 2026-08-27 snapshot and will drift — and so will the three packaging gaps, which describe a repository under active development rather than fixed properties of it: registry absence, the PythonCall dependency class and the naming mismatch can each be closed by a single commit. Re-probe before citing any of them.',
+        zh: '这一节的边界，写下来以免被过度解读：以上全部经 GitHub API 读取 —— 文件树、README、Project.toml、文件大小 —— 加一次对 Julia registry 的路径探测。其后有两件事已被一手执行，并作为测量而非元数据报出：整套测试，以及上面那个 pointed-DAG 验证器。仍未被测量的是性能 —— 没有复现任何基准，所以本节对任何实现都仍不作速度或 PMO 分数的主张。化学断言是另一个独立缺口：RDKit 在这套测试里是 opt-in，而所用环境里 PythonCall 无法加载，于是所有 RDKit 门控的断言全部被跳过，分子化学链路未被本次运行验证。★数、fork 数、issue 数与 commit 数是 2026-08-27 的时点快照，会漂移 —— 那三条打包缺口同样会漂移，它们描述的是一个正在活跃开发中的仓库，而不是它的固有属性：registry 缺席、PythonCall 的依赖归类、命名不一致，每一条都可能被一个 commit 关掉。引用其中任何一条前请重新探测。',
       },
     ],
     tableIds: ['ecosystem-status'],
@@ -505,12 +557,12 @@ export const openGaps: LText[] = [
     zh: 'Gkeka 等《Computational Hit Finding: An Industry Perspective》（J Med Chem 68(11):10507, 2025）仅摘要可得（closed OA，六条取全文路径全部失败）。其正文的"生成式 vs 超大规模筛选 vs DEL"头对头命中率对比 = UNVERIFIED；也未找到任何 DEL vs 生成式的一手头对头比较。',
   },
   {
-    en: 'The test pass rate and the benchmark numbers of danielchen26/Gflownet are UNVERIFIED: only repository metadata was read through the GitHub API and nothing was cloned or executed. The existence of test_pmo.jl / test_docking.jl / objective_comparison_drd2.jl and of reports/2026-03-01_molecular_generation_benchmark_report.md does not mean those tests pass or that those numbers reproduce.',
-    zh: 'danielchen26/Gflownet 的测试通过率与基准数字 = UNVERIFIED：仅经 GitHub API 读取仓库元数据，未 clone、未运行。test_pmo.jl / test_docking.jl / objective_comparison_drd2.jl 与 reports/2026-03-01_molecular_generation_benchmark_report.md 的存在，不等于这些测试通过、也不等于这些数字可复现。',
+    en: 'The test pass rate of danielchen26/Gflownet is no longer a gap: the suite was cloned and executed on Julia 1.11.6 on 2026-08-30 and returned 1897 pass / 28 broken / 1925 total in 55m54s, exit 0, with zero failures and zero errors. Two gaps survive that run and neither is closed by it. First, RDKit is opt-in and PythonCall could not be loaded in that environment, so every chemistry assertion was skipped — the repository itself records that turning RDKit on made 10 of the 18 assertions in test_docking.jl fail, which is how an inverted sign in sigmoid_normalize was found. Second, the benchmark numbers remain unreproduced: reports/2026-03-01_molecular_generation_benchmark_report.md was not re-run, and a passing test suite is not a performance claim.',
+    zh: 'danielchen26/Gflownet 的测试通过率不再是缺口：2026-08-30 已 clone 并在 Julia 1.11.6 上执行，得 1897 pass / 28 broken / 1925 total，55m54s，exit 0，零 failure 零 error。有两个缺口挺过了这次运行，且都没有被它关掉。第一，RDKit 是 opt-in，而该环境里 PythonCall 无法加载，于是所有化学断言被跳过 —— 仓库自己记录：打开 RDKit 后 test_docking.jl 的 18 条断言里有 10 条失败，而 sigmoid_normalize 的符号写反正是这样被发现的。第二，基准数字仍未复现：reports/2026-03-01_molecular_generation_benchmark_report.md 未被重跑，而测试套件通过并不构成性能主张。',
   },
   {
-    en: 'The Julia registry probe is a point-in-time snapshot taken on 2026-08-27 (three package paths: GFlowNet, GFlowNets, GenerativeFlowNetworks). The same holds for every repository commit count, star count, fork count and open-issue count on this page: they are that day\'s values, not standing facts.',
-    zh: 'Julia registry 探测是 2026-08-27 的时点快照（三个包路径：GFlowNet、GFlowNets、GenerativeFlowNetworks）。本页所有仓库的 commit 计数、★数、fork 数与 open issue 数同理：它们是那一天的值，不是恒定事实。',
+    en: 'The Julia registry probe is a point-in-time snapshot, re-taken on 2026-08-30 with the same result: GFlowNet, GFlowNets, GenerativeFlowNetworks and Gflownet all still return 404. The same holds for every repository commit count, star count, fork count and open-issue count on this page: they are that day\'s values, not standing facts.',
+    zh: 'Julia registry 探测是时点快照，2026-08-30 复测结果不变：GFlowNet、GFlowNets、GenerativeFlowNetworks 与 Gflownet 四个路径仍全部返回 404。本页所有仓库的 commit 计数、★数、fork 数与 open issue 数同理：它们是那一天的值，不是恒定事实。',
   },
   {
     en: 'The seven agenda items are proposals, not implemented results: not one of them has been run here, and none has been costed or scheduled. Item B — stating the choice of β* as a decision problem tied to the downstream selection budget — has no precedent in the firsthand literature we retrieved, so it is an open question rather than a known result. No item on that list may be cited as evidence for anything.',

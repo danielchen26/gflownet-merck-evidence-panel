@@ -470,8 +470,8 @@ export const tables: EvidenceTable[] = [
       zh: '共享 GFlowNet 工具链的仓库元数据实测：没有一个参考实现带真实分子任务，而 Julia 生态里没有任何 GFlowNet 包',
     },
     budgetNote: {
-      en: 'Snapshot 2026-08-27 · repository metadata and README text only — nothing was cloned, no test was run, no benchmark was reproduced',
-      zh: '2026-08-27 时点快照 · 仅仓库元数据与 README 文本 —— 未 clone、未运行测试、未复现任何基准',
+      en: 'Metadata snapshot 2026-08-27 · registry re-probed 2026-08-30, same 404s · the Julia row is the one exception: cloned and its suite executed 2026-08-30 · no benchmark reproduced for any row',
+      zh: '元数据快照 2026-08-27 · registry 于 2026-08-30 复测，仍是同样的 404 · Julia 那一行是唯一例外：2026-08-30 已 clone 并执行整套测试 · 所有行均未复现基准',
     },
     columns: [
       { en: 'Repository', zh: '仓库' },

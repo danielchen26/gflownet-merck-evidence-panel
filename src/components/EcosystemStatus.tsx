@@ -14,8 +14,10 @@ import './EcosystemStatus.css';
  *   --flow    claimed         a causal reading or a design claim, i.e. mine
  *
  * Everything here came from the GitHub API (tree, README, Project.toml, file
- * sizes) plus registry probes. Nothing was cloned, run, or benchmarked — see
- * BOUNDARY at the bottom of the file, which is rendered, not just a comment. */
+ * sizes) plus registry probes. The Julia case is the exception and is marked as
+ * such: that repository WAS cloned and its suite executed on 2026-08-30. What
+ * still has not happened anywhere in this section is a benchmark — see BOUNDARY
+ * at the bottom of the file, which is rendered, not just a comment. */
 
 /* ══ (1) the ecosystem, as probed on 2026-08-27 ══════════════════════════ */
 
@@ -489,11 +491,14 @@ const PROPOSAL_FIELDS: LText = {
 const BOUNDARY_STAMP: LText = { en: 'method and boundary', zh: '方法与边界' };
 
 const BOUNDARY_BODY: LText = {
-  en: 'Every repository figure in this section was read through the GitHub API — file tree, README, Project.toml, file sizes — plus direct probes of the Julia General registry. Nothing was cloned, no test suite was run, no benchmark was executed. This section therefore states no test pass rate and no performance result. Data snapshot: 2026-08-27.',
-  zh: '本节所有仓库数字都来自 GitHub API 读取 —— 文件树、README、Project.toml、文件大小 —— 以及对 Julia General registry 的直接探测。未 clone、未运行测试、未做基准。因此本节不给出任何测试通过率或性能结果。数据快照日期：2026-08-27。',
+  en: 'Every repository figure in this section was read through the GitHub API — file tree, README, Project.toml, file sizes — plus direct probes of the Julia General registry, re-run on 2026-08-30 with the same 404s. One exception, stated so the rest is not over-read: danielchen26/Gflownet was cloned and its suite executed on Julia 1.11.6 on 2026-08-30, returning 1897 pass / 28 broken / 1925 total in 55m54s at exit 0. Two things that run did NOT establish. RDKit is opt-in and PythonCall would not load, so every chemistry assertion was skipped — and the repository itself records that switching RDKit on made 10 of the 18 assertions in test_docking.jl fail, exposing an inverted sign that had been rewarding molecules for not binding. And no benchmark was reproduced anywhere in this section, for any implementation, so there is still no performance claim here. Metadata snapshot: 2026-08-27; execution and registry re-probe: 2026-08-30.',
+  zh: '本节所有仓库数字都来自 GitHub API 读取 —— 文件树、README、Project.toml、文件大小 —— 以及对 Julia General registry 的直接探测，2026-08-30 复测结果仍是同样的 404。有一个例外，明说出来以免其余部分被过度解读：danielchen26/Gflownet 已于 2026-08-30 被 clone 并在 Julia 1.11.6 上执行整套测试，得 1897 pass / 28 broken / 1925 total，55m54s，exit 0。有两件事那次运行并没有确立。RDKit 是 opt-in 且 PythonCall 无法加载，于是所有化学断言被跳过 —— 而仓库自己记录：打开 RDKit 后 test_docking.jl 的 18 条断言里 10 条失败，暴露出一个符号写反、一直在奖励分子「不结合」的缺陷。以及本节对任何实现都没有复现任何基准，所以这里仍然不存在性能主张。元数据快照：2026-08-27；执行与 registry 复测：2026-08-30。',
 };
 
-const BOUNDARY_HEAD: LText = { en: 'What I did not verify', zh: '我没有验证的' };
+const BOUNDARY_HEAD: LText = {
+  en: 'What was executed, and what still was not',
+  zh: '哪些被执行了，哪些仍然没有',
+};
 
 const BOUNDARY_GAPS: readonly LText[] = [
   {

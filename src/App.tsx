@@ -9,6 +9,8 @@ import { IntegrationStack } from './components/IntegrationStack'
 import { EcosystemStatus } from './components/EcosystemStatus'
 import { DecisionBrief } from './components/DecisionBrief'
 import { ResearchAgenda } from './components/ResearchAgenda'
+import { PlatformStack } from './components/PlatformStack'
+import { PromiseAudit } from './components/PromiseAudit'
 import { sections, openGaps } from './data/sections'
 import { tables, merckFunnel, sources } from './data/evidence'
 import { t, UI, useLang } from './i18n/i18n'
@@ -242,6 +244,12 @@ export default function App() {
 
         {SECTION['integration'] && <SectionShell section={SECTION['integration']} />}
 
+        {SECTION['platform'] && (
+          <SectionShell section={SECTION['platform']}>
+            <PlatformStack />
+          </SectionShell>
+        )}
+
         {SECTION['wetlab'] && (
           <SectionShell section={SECTION['wetlab']}>
             {TABLE['malt1'] && <EvidenceTable table={TABLE['malt1']} />}
@@ -256,6 +264,12 @@ export default function App() {
               caption={COPY.funnelCaption}
               source={sources['merckBlog']}
             />
+          </SectionShell>
+        )}
+
+        {SECTION['promise'] && (
+          <SectionShell section={SECTION['promise']}>
+            <PromiseAudit />
           </SectionShell>
         )}
 

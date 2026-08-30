@@ -1,0 +1,459 @@
+/* ==========================================================================
+   PlatformStack — the forward-looking half: what each of the four layers
+   should be if the goal is the strongest 2026 molecular generation platform.
+
+   Colour keeps the panel-wide epistemic contract:
+     --flow    claimed  — every pick, every proposed interface
+     --assay   measured — the evidence a pick is argued from
+     --verdict refuted  — a ceiling that was measured to fail outright (L3)
+
+   The interface field is deliberately the loudest cell on each card: a pick
+   without a boundary cannot be swapped, and the whole section is an argument
+   about boundaries rather than about methods.
+   ========================================================================== */
+
+.pstack {
+  margin-top: var(--s8);
+  /* signatures and identifiers (find_parent_for_action, AiZynthFinder,
+     recursionpharma/gflownet) must not push the narrow layout sideways */
+  overflow-wrap: anywhere;
+}
+
+/* ── shared type roles ─────────────────────────────────────────────── */
+
+.pstack__kicker {
+  display: block;
+  margin-bottom: var(--s2);
+  color: var(--flow);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+html:lang(zh) .pstack__kicker {
+  letter-spacing: 0.08em;
+}
+
+.pstack__sectionTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2);
+  margin: 0 0 var(--s2);
+  color: var(--vellum);
+  font-size: clamp(18px, 2.4vw, 23px);
+  line-height: 1.2;
+}
+
+.pstack__lede {
+  max-width: 68ch;
+  margin: 0 0 var(--s6);
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.62;
+}
+
+.pstack__cite {
+  margin-top: var(--s2);
+}
+
+/* ── ① thesis ──────────────────────────────────────────────────────── */
+
+.pstack__thesis {
+  margin-bottom: var(--s8);
+  padding: var(--s6);
+  border: 1px solid var(--rule-strong);
+  border-left: 3px solid var(--flow);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--flow) 8%, transparent),
+    transparent 62%
+  );
+}
+
+.pstack__thesisTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2);
+  margin: 0 0 var(--s4);
+  color: var(--vellum);
+  font-size: clamp(19px, 2.6vw, 26px);
+  line-height: 1.2;
+}
+
+.pstack__thesisBody {
+  max-width: 68ch;
+  margin: 0 0 var(--s3);
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.62;
+}
+
+.pstack__chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: var(--s4);
+  margin: var(--s6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pstack__chip {
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--assay);
+  background: color-mix(in srgb, var(--assay) 6%, var(--ink-2));
+}
+
+.pstack__chipValue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  color: var(--assay);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.pstack__chipNote {
+  display: block;
+  margin-top: var(--s2);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+/* ── ② the four layer cards ────────────────────────────────────────── */
+
+.pstack__picks {
+  padding-top: var(--s6);
+  border-top: 1px solid var(--rule);
+}
+
+.pstack__layers {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pstack__layer {
+  padding: var(--s6) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.pstack__layer:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+/* L3: the one square GFlowNet occupies */
+.pstack__layer[data-gfn='true'] {
+  padding-left: var(--s4);
+  border-left: 2px solid var(--flow);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--flow) 6%, transparent),
+    transparent 55%
+  );
+}
+
+.pstack__layerHead {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: var(--s2) var(--s3);
+  margin-bottom: var(--s4);
+}
+
+.pstack__layerId {
+  grid-row: 1;
+  color: var(--flow);
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.pstack__layerName {
+  grid-row: 1;
+  margin: 0;
+  color: var(--vellum);
+  font-size: clamp(17px, 2.2vw, 21px);
+  line-height: 1.22;
+}
+
+.pstack__gfnFlag {
+  grid-column: 2;
+  justify-self: start;
+  padding: 2px var(--s2);
+  border: 1px solid color-mix(in srgb, var(--flow) 55%, transparent);
+  border-radius: 2px;
+  color: var(--flow);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pstack__layerDuty {
+  grid-column: 2;
+  max-width: 70ch;
+  margin: 0;
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.58;
+}
+
+/* ── the five fields ───────────────────────────────────────────────── */
+
+/* Two deterministic columns, not auto-fit: the card holds exactly two
+   half-width fields (pick, why), and a third empty track would open a hole
+   next to them on wide screens. */
+.pstack__fields {
+  display: grid;
+  gap: var(--s4);
+}
+
+@media (min-width: 620px) {
+  .pstack__fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pstack__field {
+  padding-top: var(--s3);
+  border-top: 2px solid var(--rule-strong);
+}
+
+.pstack__field[data-field='pick'] {
+  border-top-color: var(--flow);
+}
+
+.pstack__field[data-field='why'] {
+  border-top-color: var(--assay);
+}
+
+/* Spans the row so no card ends on a half-empty line; the frame is reserved
+   for the interface, so a wide ceiling still reads quieter than it. */
+.pstack__field[data-field='ceiling'] {
+  grid-column: 1 / -1;
+  border-top-color: var(--assay-dim);
+}
+
+/* The load-bearing field gets the whole row and a frame: swapping a layer is
+   only possible where a boundary is written down. */
+.pstack__field[data-field='iface'] {
+  grid-column: 1 / -1;
+  padding: var(--s4);
+  border: 1px solid var(--rule-strong);
+  border-top: 2px solid var(--flow);
+  background: var(--ink-2);
+}
+
+.pstack__fieldLabel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  margin-bottom: var(--s2);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html:lang(zh) .pstack__fieldLabel {
+  letter-spacing: 0.06em;
+}
+
+.pstack__field[data-field='pick'] .pstack__fieldLabel,
+.pstack__field[data-field='iface'] .pstack__fieldLabel {
+  color: var(--flow);
+}
+
+.pstack__field[data-field='why'] .pstack__fieldLabel,
+.pstack__field[data-field='ceiling'] .pstack__fieldLabel {
+  color: var(--assay);
+}
+
+.pstack__facing {
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.pstack__fieldBody {
+  max-width: 74ch;
+  margin: 0;
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ── the signatures ────────────────────────────────────────────────── */
+
+.pstack__sigList {
+  margin: 0 0 var(--s3);
+  padding: var(--s3);
+  border-left: 2px solid var(--flow-dim);
+  background: var(--ink-3);
+  list-style: none;
+}
+
+.pstack__sig {
+  color: var(--vellum);
+  font-size: 11.5px;
+  line-height: 1.7;
+}
+
+.pstack__sig + .pstack__sig {
+  margin-top: 2px;
+}
+
+.pstack__cites {
+  margin-top: var(--s4);
+  padding-top: var(--s3);
+  border-top: 1px dashed var(--rule);
+}
+
+/* ── ③ what "organic" requires ─────────────────────────────────────── */
+
+.pstack__glue {
+  margin-top: var(--s8);
+  padding: var(--s6);
+  border: 1px solid var(--rule-strong);
+  border-left: 3px solid var(--assay);
+  background: color-mix(in srgb, var(--assay) 5%, transparent);
+}
+
+.pstack__glueBody {
+  max-width: 70ch;
+  margin: 0 0 var(--s3);
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.62;
+}
+
+/* ── ④ acceptance conditions ───────────────────────────────────────── */
+
+.pstack__accept {
+  margin-top: var(--s8);
+  padding-top: var(--s6);
+  border-top: 1px solid var(--rule);
+}
+
+.pstack__conditions {
+  display: grid;
+  gap: var(--s4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pstack__condition {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s3);
+  padding: var(--s4);
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--flow);
+  background: var(--ink-2);
+}
+
+.pstack__condKey {
+  color: var(--flow);
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.pstack__condText {
+  min-width: 0;
+}
+
+.pstack__condHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  margin: 0 0 var(--s2);
+  color: var(--vellum);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+.pstack__condBody {
+  max-width: 72ch;
+  margin: 0;
+  color: var(--vellum-dim);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ── ⑤ boundary ────────────────────────────────────────────────────── */
+
+.pstack__boundary {
+  margin-top: var(--s6);
+  padding: var(--s4);
+  border: 1px dashed var(--rule-strong);
+}
+
+.pstack__boundaryTitle {
+  margin: 0 0 var(--s2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html:lang(zh) .pstack__boundaryTitle {
+  letter-spacing: 0.06em;
+}
+
+.pstack__boundaryBody {
+  max-width: 74ch;
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* ── narrow ────────────────────────────────────────────────────────── */
+
+@media (max-width: 560px) {
+  .pstack__thesis,
+  .pstack__glue {
+    padding: var(--s4);
+  }
+
+  .pstack__layer[data-gfn='true'] {
+    padding-left: var(--s3);
+  }
+
+  .pstack__layerId {
+    font-size: 20px;
+  }
+
+  .pstack__field[data-field='iface'] {
+    padding: var(--s3);
+  }
+
+  .pstack__sigList {
+    padding: var(--s2);
+  }
+
+  .pstack__sig {
+    font-size: 11px;
+  }
+}
